@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>微信打开 HTML 能力检测</title>
+<style>
+:root { --ok: #1a7f37; }
+body { font: 16px/1.6 sans-serif; margin: 16px; color: #222; }
+.row { margin: 10px 0; padding: 8px; border: 1px solid #ccc; }
+.var-box { width: 60px; height: 24px; background: var(--ok); display: inline-block; vertical-align: middle; }
+.spin { width: 24px; height: 24px; background: #c00; display: inline-block; animation: s 1s linear infinite; vertical-align: middle; }
+@keyframes s { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<h3>微信打开 HTML 能力检测 v1</h3>
+<div class="row">1. 能看到这一行 = HTML 文本已显示</div>
+<div class="row" id="js">2. JS：<b>未执行</b></div>
+<noscript><div class="row">2b. noscript：<b>JS 被禁用</b></div></noscript>
+<div class="row">3. 内联 SVG（应有红色圆）：<svg width="28" height="28"><circle cx="14" cy="14" r="12" fill="#c00"/></svg></div>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="sq" viewBox="0 0 10 10"><rect width="10" height="10" fill="#d4af37"/></symbol></defs></svg>
+<div class="row">4. SVG &lt;use&gt;（应有金色方块）：<svg width="28" height="28"><use href="#sq" xlink:href="#sq"/></svg></div>
+<div class="row">5. CSS 变量（应有绿色长条）：<span class="var-box"></span></div>
+<div class="row">6. CSS 动画（红方块应在转）：<span class="spin"></span></div>
+<div class="row">7. canvas（应有蓝色块和白字）：<canvas id="c" width="120" height="30" style="border:1px dashed #999"></canvas></div>
+<div class="row" id="env">8. 环境：<b>未知（需要 JS）</b></div>
+<script>
+document.getElementById('js').innerHTML = '2. JS：<b style="color:#1a7f37">已执行 ✓</b>';
+var c = document.getElementById('c').getContext('2d');
+c.fillStyle = '#1565c0'; c.fillRect(0, 0, 120, 30); c.fillStyle = '#fff'; c.font = '14px sans-serif'; c.fillText('canvas OK', 18, 20);
+document.getElementById('env').innerHTML = '8. 环境：<br>UA=' + navigator.userAgent.replace(/</g, '&lt;') +
+  '<br>宽=' + window.innerWidth + ' href=' + String(location.href).slice(0, 60).replace(/</g, '&lt;');
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>给妈妈的新年贺卡</title>
+<style>
+:root{
+  --bg-top:#A3122B; --bg:#8E0E1E; --bg-bottom:#6E0B16;
+  --surface:#FFF6E2; --tint:rgba(255,246,226,.97);
+  --t1:#8E0E1E; --t2:#5C0E16; --t3:#7A5A2A;
+  --acc:#D4AF37; --acc-h:#E4BE50; --on:#8E0E1E;
+  --gold:#F6D47A; --gold-deep:#C8922A; --gold-pale:#FBEED0;
+  --border:rgba(246,212,122,.45);
+  --radius:22px; --btnr:980px; --ctrl:14px;
+  --hero-w:700;
+  --disp:"Kaiti SC","STKaiti","KaiTi","FZKai-Z03S","Songti SC","PingFang SC",serif;
+  --body:"Songti SC","STSong","SimSun","PingFang SC",serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{height:100%}
+body{
+  min-height:100%;
+  font-family:var(--body);
+  color:var(--gold-pale);
+  background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg) 45%,var(--bg-bottom) 100%);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.hidden-defs{position:absolute;width:0;height:0;overflow:hidden}
+
+/* 顶部悬挂灯笼 */
+.lantern-row{position:relative;z-index:2;max-width:520px;margin:0 auto;height:0}
+.lantern{position:absolute;top:2px;width:clamp(86px,24vw,124px);pointer-events:none}
+.lantern.left{left:2px}
+.lantern.right{right:2px}
+.lantern svg{width:100%;height:auto;display:block}
+.swing{transform-origin:50% 0;animation:swing 3.8s ease-in-out infinite alternate}
+@keyframes swing{from{transform:rotate(-4.5deg)}to{transform:rotate(4.5deg)}}
+
+.page{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 22px calc(44px + env(safe-area-inset-bottom))}
+
+/* Hero */
+.hero{padding:106px 0 0;text-align:center}
+.eyebrow{display:block;font-family:var(--disp);font-size:13px;letter-spacing:6px;text-indent:6px;color:var(--gold);opacity:.95}
+.seal{
+  width:clamp(74px,20vw,92px);aspect-ratio:1/1;max-width:100%;
+  margin:20px auto 22px;border-radius:50%;
+  background:linear-gradient(160deg,#FBE9B0 0%,#E9BE57 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(255,244,196,.55), inset 0 0 0 5px rgba(148,23,39,.13);
+}
+.seal span{font-family:var(--disp);font-size:2.35em;font-weight:700;color:#8E0E1E;line-height:1}
+h1{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(46px,13vw,70px);
+  letter-spacing:.14em;text-indent:.14em;line-height:1.15;
+  background:linear-gradient(180deg,#FFF6D0 0%,#F4C95C 62%,#C88F22 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 9px rgba(52,0,8,.5));
+}
+.sub{margin-top:14px;font-family:var(--disp);font-size:clamp(17px,5vw,21px);color:var(--gold-pale);letter-spacing:.34em;text-indent:.34em}
+
+/* 金线分隔 */
+.divider{display:flex;align-items:center;gap:14px;width:min(80%,340px);margin:30px auto 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(246,212,122,.55),transparent)}
+.divider svg{width:26px;height:26px;flex:none;display:block}
+
+/* 祝福卡 */
+.card{
+  position:relative;margin:34px auto 0;
+  background:var(--tint);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:36px 30px 30px;
+  color:var(--t2);
+  box-shadow:0 0 0 6px rgba(246,212,122,.12);
+}
+.corner{position:absolute;width:26px;height:26px;border:2.5px solid #D4AF37;opacity:.9}
+.corner.tl{top:11px;left:11px;border-right:0;border-bottom:0;border-top-left-radius:9px}
+.corner.tr{top:11px;right:11px;border-left:0;border-bottom:0;border-top-right-radius:9px}
+.corner.bl{bottom:11px;left:11px;border-right:0;border-top:0;border-bottom-left-radius:9px}
+.corner.br{bottom:11px;right:11px;border-left:0;border-top:0;border-bottom-right-radius:9px}
+.salute{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--t1);letter-spacing:.08em;margin-bottom:18px}
+.card p.body{font-size:16.5px;line-height:2;letter-spacing:.03em;margin-bottom:15px;color:var(--t2);text-align:justify}
+.para-flower{display:flex;justify-content:center;margin:6px 0 16px}
+.para-flower svg{width:21px;height:21px;display:block}
+.endline{
+  margin-top:8px;text-align:center;
+  font-family:var(--disp);font-weight:700;font-size:19.5px;
+  color:var(--t1);letter-spacing:.09em;line-height:1.6;
+}
+
+/* 落款 */
+footer{margin-top:36px;text-align:center}
+.sign{font-family:var(--disp);font-size:17px;letter-spacing:.14em;text-indent:.14em;color:var(--gold)}
+.date{margin-top:10px;font-size:13px;letter-spacing:.24em;text-indent:.24em;color:var(--gold-pale);opacity:.9}
+.foot-deco{display:flex;justify-content:center;gap:12px;margin-top:28px}
+.foot-deco svg{width:46px;height:auto;display:block}
+.tip{margin-top:22px;text-align:center;font-size:12.5px;letter-spacing:.16em;text-indent:.16em;color:#F2D98F}
+
+/* 入场动画 */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.rise{animation:rise .95s cubic-bezier(.22,.7,.3,1) both}
+.rise.d1{animation-delay:.15s}
+.rise.d2{animation-delay:.3s}
+.rise.d3{animation-delay:.46s}
+.rise.d4{animation-delay:.66s}
+
+@media (prefers-reduced-motion: reduce){
+  .swing,.rise{animation:none}
+}
+</style>
+</head>
+<body>
+
+<svg class="hidden-defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="lgRed" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8494F"/>
+      <stop offset=".5" stop-color="#C3182B"/>
+      <stop offset="1" stop-color="#9C0F1F"/>
+    </linearGradient>
+  </defs>
+  <symbol id="lantern" viewBox="0 0 100 172">
+    <line x1="50" y1="2" x2="50" y2="18" stroke="#E9B949" stroke-width="2.5" stroke-linecap="round"/>
+    <rect x="33" y="16" width="34" height="11" rx="3.5" fill="#E9B949"/>
+    <ellipse cx="50" cy="82" rx="33" ry="49" fill="url(#lgRed)"/>
+    <ellipse cx="50" cy="82" rx="30" ry="46" fill="none" stroke="rgba(246,212,122,.4)" stroke-width="1.5"/>
+    <path d="M19 68 q31 -8 62 0" stroke="rgba(246,212,122,.8)" stroke-width="3.5" fill="none"/>
+    <path d="M19 96 q31 8 62 0" stroke="rgba(246,212,122,.8)" stroke-width="3.5" fill="none"/>
+    <text x="50" y="88" text-anchor="middle" font-size="30" font-family="serif" font-weight="700" fill="#F6D47A">福</text>
+    <rect x="31" y="128" width="38" height="11" rx="3.5" fill="#E9B949"/>
+    <line x1="50" y1="139" x2="50" y2="146" stroke="#E9B949" stroke-width="2.5"/>
+    <path d="M50 146 l-11 13 h22 z" fill="#E9B949"/>
+    <g stroke="#F6D47A" stroke-width="2" stroke-linecap="round">
+      <line x1="50" y1="158" x2="42" y2="170"/>
+      <line x1="50" y1="158" x2="50" y2="172"/>
+      <line x1="50" y1="158" x2="58" y2="170"/>
+    </g>
+  </symbol>
+  <symbol id="flower" viewBox="0 0 40 40">
+    <g transform="rotate(0 20 20)"><ellipse cx="20" cy="9" rx="4.6" ry="7.5" fill="#D4AF37"/></g>
+    <g transform="rotate(72 20 20)"><ellipse cx="20" cy="9" rx="4.6" ry="7.5" fill="#D4AF37"/></g>
+    <g transform="rotate(144 20 20)"><ellipse cx="20" cy="9" rx="4.6" ry="7.5" fill="#D4AF37"/></g>
+    <g transform="rotate(216 20 20)"><ellipse cx="20" cy="9" rx="4.6" ry="7.5" fill="#D4AF37"/></g>
+    <g transform="rotate(288 20 20)"><ellipse cx="20" cy="9" rx="4.6" ry="7.5" fill="#D4AF37"/></g>
+    <circle cx="20" cy="20" r="4" fill="#C8922A"/>
+  </symbol>
+</svg>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="lantern-row" aria-hidden="true">
+  <div class="lantern left"><svg><use href="#lantern"/></svg></div>
+  <div class="lantern right"><svg class="swing" style="animation-delay:-1.2s"><use href="#lantern"/></svg></div>
+</div>
+
+<div class="page">
+  <header class="hero">
+    <span class="eyebrow rise">二〇二七 · 新春贺岁</span>
+    <div class="seal rise d1"><span>福</span></div>
+    <h1 class="rise d2">新年快乐</h1>
+    <p class="sub rise d3">致我最亲爱的妈妈</p>
+    <div class="divider rise d4"><svg><use href="#flower"/></svg></div>
+  </header>
+
+  <section class="card rise d4" aria-label="给妈妈的新年祝福">
+    <i class="corner tl" aria-hidden="true"></i>
+    <i class="corner tr" aria-hidden="true"></i>
+    <i class="corner bl" aria-hidden="true"></i>
+    <i class="corner br" aria-hidden="true"></i>
+    <p class="salute">亲爱的妈妈：</p>
+    <p class="body">新年好呀。</p>
+    <p class="body">时光走得真快，又是一年新春到。回望这一年，您的叮咛、您的牵挂，还有那句总挂在嘴边的「记得按时吃饭」，都是我心底最安稳的归处。</p>
+    <div class="para-flower" aria-hidden="true"><svg><use href="#flower"/></svg></div>
+    <p class="body">小时候，总觉得您无所不能；长大后才明白——您把温柔都给了我，把操劳都留给了自己。您鬓边的白发，每一根都写着牵挂。</p>
+    <div class="para-flower" aria-hidden="true"><svg><use href="#flower"/></svg></div>
+    <p class="body">新的一年，愿您少一些辛劳，多一些欢笑；愿您身体康健、岁岁平安。往后的日子，换我来疼您、陪您、守护您。</p>
+    <p class="endline">妈妈，新年快乐。我爱您，<br>不止这一句，更在每一天。</p>
+  </section>
+
+  <footer>
+    <p class="sign">—— 永远爱您的孩子</p>
+    <p class="date">新春</p>
+    <div class="foot-deco" aria-hidden="true">
+      <svg><use href="#lantern"/></svg>
+      <svg style="width:40px"><use href="#flower"/></svg>
+      <svg><use href="#lantern"/></svg>
+    </div>
+    <p class="tip">轻触屏幕任意处 · 点亮一束烟花</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var cv=document.getElementById('fx');
+  var c=cv.getContext('2d');
+  var W=0,H=0,DPR=1;
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=window.innerWidth;H=window.innerHeight;
+    cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+    c.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize',resize);
+  resize();
+
+  var COLORS=['#F6D47A','#FFEDB0','#E23A45','#FFD24A','#FFF3C4','#E98A2E','#FFE9A8'];
+  var parts=[],rockets=[],golds=[];
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function burst(x,y){
+    var n=44+Math.floor(Math.random()*22);
+    var c1=COLORS[Math.floor(Math.random()*COLORS.length)];
+    var c2=COLORS[Math.floor(Math.random()*COLORS.length)];
+    for(var i=0;i<n;i++){
+      var a=Math.random()*Math.PI*2;
+      var sp=90+Math.random()*330;
+      parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-60,
+        life:1,decay:0.36+Math.random()*0.34,
+        col:i%3===0?c2:c1,r:1.3+Math.random()*1.7});
+    }
+  }
+  function launch(){
+    rockets.push({x:W*0.12+Math.random()*W*0.76,y:H+8,
+      vx:(Math.random()-0.5)*0.9,vy:-(300+Math.random()*260),
+      target:H*(0.12+Math.random()*0.2)});
+  }
+  function gold(){
+    if(golds.length<70)
+      golds.push({x:Math.random()*W,y:-14,vy:20+Math.random()*50,
+        vx:(Math.random()-0.5)*0.5,ph:Math.random()*Math.PI*2,
+        sp:0.6+Math.random()*0.9,r:2+Math.random()*3.5,
+        a:0.45+Math.random()*0.5,rot:Math.random()*Math.PI});
+  }
+
+  var last=null,nextLaunch=1000,nextGold=0;
+  function frame(ts){
+    if(last===null)last=ts;
+    var dt=Math.min((ts-last)/1000,0.033);last=ts;
+
+    c.clearRect(0,0,W,H);
+
+    for(var i=golds.length-1;i>=0;i--){
+      var g=golds[i];
+      g.y+=g.vy*dt; g.x+=g.vx*dt+Math.sin(g.ph+g.y*0.02)*g.sp;
+      g.rot+=dt*1.5;
+      if(g.y>H+16){golds.splice(i,1);continue;}
+      c.globalAlpha=g.a;
+      c.fillStyle='#F6D47A';
+      c.save();c.translate(g.x,g.y);c.rotate(g.rot);
+      c.fillRect(-g.r/2,-g.r/2,g.r,g.r);c.restore();
+    }
+
+    for(var j=rockets.length-1;j>=0;j--){
+      var r=rockets[j];
+      r.x+=r.vx*dt; r.y+=r.vy*dt; r.vy+=140*dt;
+      if(r.y<=r.target){burst(r.x,r.y);rockets.splice(j,1);continue;}
+      c.globalAlpha=0.9;
+      c.fillStyle='#FFEDB0';
+      c.beginPath();c.arc(r.x,r.y,2,0,6.2832);c.fill();
+    }
+
+    for(var k=parts.length-1;k>=0;k--){
+      var p=parts[k];
+      p.vx*=0.985; p.vy*=0.985;
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=260*dt;
+      p.life-=p.decay*dt;
+      if(p.life<=0){parts.splice(k,1);continue;}
+      c.globalAlpha=Math.max(p.life,0);
+      c.fillStyle=p.col;
+      c.beginPath();c.arc(p.x,p.y,p.r,0,6.2832);c.fill();
+    }
+    c.globalAlpha=1;
+
+    if(ts>nextLaunch){launch();nextLaunch=ts+1400+Math.random()*1600;}
+    if(ts>nextGold){gold();nextGold=ts+260+Math.random()*380;}
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  if(!reduced){
+    document.addEventListener('pointerdown',function(e){
+      burst(e.clientX,e.clientY);
+    });
+  }
+})();
+</script>
+
+<script>(function(){
+var d=document,b=d.body;if(!b)return;
+var old=b.querySelectorAll('[data-aigc-mark],#__xas_aigc_watermark__');
+for(var k=0;k<old.length;k++)old[k].parentNode&&old[k].parentNode.removeChild(old[k]);
+var f=d.createElement("div");
+f.id="__xas_aigc_watermark__";
+f.setAttribute("data-aigc-mark","true");
+f.style.cssText="position:fixed;bottom:8px;right:12px;z-index:2147483647;font-size:11px;padding:3px 7px;font-family:system-ui,sans-serif;pointer-events:none;color:rgba(30,30,30,0.6);background:rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.08);border-radius:4px;line-height:1.4;backdrop-filter:blur(8px);";
+var paths=["M14.0072 26.6377C14.2318 25.9475 13.3696 25.4389 12.8659 25.9611C9.56694 29.3941 6.9736 33.4696 5.35587 37.9788C-0.86998 55.1279 7.72006 74.1728 24.7867 80.6891C33.1499 83.8815 41.0252 82.7894 44.7212 81.8812C54.0056 79.6016 63.1537 72.4609 66.7114 63.4447C67.1039 62.4525 66.6252 61.3286 65.6404 60.9222C63.78 60.1548 61.9263 59.3896 60.3721 58.7471C59.46 58.3702 58.4117 58.7402 57.9398 59.6076C56.4287 62.3753 54.8496 65.0568 52.4945 67.2274C46.0349 73.5893 36.1675 75.8621 27.5956 72.9036C14.6833 68.6487 7.76998 54.5307 12.124 41.7683C12.3668 41.0553 12.4916 40.3038 12.4621 39.55C12.242 33.8125 12.8228 30.2955 14.0072 26.6377Z","M73.6785 14.313C74.3682 14.5378 74.8765 13.675 74.3546 13.171C70.9241 9.86968 66.8514 7.27451 62.3454 5.65564C45.2084 -0.574603 26.1769 8.0215 19.6651 25.1002C16.4751 33.4692 17.5664 41.3501 18.474 45.0488C20.7519 54.3396 27.8876 63.4943 36.8974 67.0544C37.8889 67.4472 39.012 66.9681 39.4182 65.9827C40.185 64.1209 40.9497 62.2659 41.5918 60.7107C41.9684 59.7979 41.5986 58.7489 40.7318 58.2767C37.9661 56.7645 35.2865 55.1843 33.1174 52.8275C26.76 46.3634 24.4888 36.489 27.4452 27.9111C31.6971 14.9897 45.8051 8.07145 58.5586 12.4285C59.271 12.6715 60.022 12.7964 60.7753 12.7668C66.5088 12.5466 70.0233 13.1278 73.6785 14.313Z","M85.9922 73.9549C85.7676 74.6451 86.6298 75.1537 87.1335 74.6315C90.4324 71.1985 93.0258 67.123 94.6435 62.6138C100.869 45.4647 92.2793 26.4198 75.2127 19.9035C66.8495 16.7111 58.9742 17.8033 55.2782 18.7114C45.9938 20.991 36.8456 28.1317 33.288 37.1479C32.8955 38.1401 33.3742 39.264 34.3589 39.6704C36.2194 40.4378 38.0731 41.203 39.6273 41.8455C40.5394 42.2224 41.5876 41.8524 42.0596 40.985C43.5706 38.2173 45.1498 35.5358 47.5049 33.3652C53.9645 27.0033 63.8319 24.7305 72.4038 27.689C85.3161 31.9439 92.2294 46.0619 87.8754 58.8243C87.6326 59.5373 87.5078 60.2888 87.5373 61.0426C87.7574 66.7801 87.1766 70.2971 85.9922 73.9549Z","M26.2674 86.2849C25.5777 86.0601 25.0694 86.9229 25.5913 87.4269C29.0219 90.7282 33.0945 93.3234 37.6028 94.9423C54.7398 101.173 73.7713 92.5764 80.2831 75.4977C83.4731 67.1287 82.3818 59.2478 81.4742 55.5491C79.1963 46.2583 72.0606 37.1036 63.0508 33.5435C62.0593 33.1507 60.9362 33.6298 60.53 34.6152C59.7632 36.477 58.9985 38.3297 58.3564 39.885C57.9798 40.7977 58.3496 41.8467 59.2163 42.3212C61.9821 43.8334 64.6617 45.4114 66.8285 47.7704C73.1859 54.2345 75.4571 64.1089 72.5007 72.6869C68.2488 85.6082 54.1408 92.5265 41.3874 88.1694C40.6749 87.9264 39.9239 87.8015 39.1706 87.8311C33.4371 88.0513 29.9226 87.4701 26.2674 86.2826V86.2849Z"];
+b.appendChild(f);
+var svg='<svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline;vertical-align:-2px;margin:0 4px">';
+for(var i=0;i<paths.length;i++)svg+='<path d="'+paths[i]+'" fill="rgba(30,30,30,0.5)"/>';
+svg+="</svg>";
+f.innerHTML="本页面由"+svg+"超级小爱AI生成";
+})();</script>
+</body>
+</html>
