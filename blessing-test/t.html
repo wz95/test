@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新年祝福</title>
+<meta name="description" content="一张来自超级小爱的新年祝福">
+<meta property="og:title" content="新年祝福">
+<meta property="og:image" content="https://test.wengzhe.cn/blessing-test/thumb-v1.jpg">
+<style>
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#A3122B,#6E0B16);color:#FBEED0;font-family:"Songti SC","STSong",serif;text-align:center;overflow-x:hidden}
+.lantern{position:absolute;top:0;width:60px;height:110px;transform-origin:top center;animation:sw 2.4s ease-in-out infinite alternate}
+.lantern.l{left:18px}.lantern.r{right:18px;animation-delay:-1.2s}
+@keyframes sw{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+h1{margin:150px 0 6px;font-size:44px;color:#F6D47A;letter-spacing:.12em}
+.to{font-size:18px;letter-spacing:.3em}
+.card{margin:28px 20px;padding:22px;background:#FFF6E2;color:#5C0E16;border-radius:20px;text-align:left;line-height:1.9;font-size:17px;white-space:pre-wrap}
+.from{text-align:right;margin-top:12px}
+#fx{position:fixed;inset:0;pointer-events:none}
+.ai{position:fixed;right:10px;bottom:10px;font-size:12px;background:rgba(0,0,0,.35);padding:3px 8px;border-radius:8px}
+.err{margin-top:160px;font-size:16px}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<svg class="lantern l" viewBox="0 0 60 110"><line x1="30" y1="0" x2="30" y2="20" stroke="#D4AF37" stroke-width="3"/><rect x="18" y="18" width="24" height="8" rx="2" fill="#D4AF37"/><ellipse cx="30" cy="56" rx="26" ry="30" fill="#C8102E" stroke="#D4AF37" stroke-width="2"/><text x="30" y="64" font-size="22" text-anchor="middle" fill="#F6D47A">福</text><rect x="18" y="86" width="24" height="8" rx="2" fill="#D4AF37"/></svg>
+<svg class="lantern r" viewBox="0 0 60 110"><line x1="30" y1="0" x2="30" y2="20" stroke="#D4AF37" stroke-width="3"/><rect x="18" y="18" width="24" height="8" rx="2" fill="#D4AF37"/><ellipse cx="30" cy="56" rx="26" ry="30" fill="#C8102E" stroke="#D4AF37" stroke-width="2"/><text x="30" y="64" font-size="22" text-anchor="middle" fill="#F6D47A">福</text><rect x="18" y="86" width="24" height="8" rx="2" fill="#D4AF37"/></svg>
+<div id="main"></div>
+<div class="ai">本页面由超级小爱AI生成</div>
+<script>
+(function(){
+  function b64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var bin=atob(s),bytes=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new TextDecoder('utf-8').decode(bytes);}
+  function esc(t){return String(t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  var m=document.getElementById('main'),d=null;
+  try{var h=location.hash.replace(/^#/,'');var p=new URLSearchParams(h);if(p.get('d'))d=JSON.parse(b64u(p.get('d')));}catch(e){d=null;}
+  if(!d||typeof d!=='object'){m.innerHTML='<div class="err">这张贺卡的内容没有带上，请让发送方重新分享。</div>';return;}
+  var title=(d.t||'新年快乐').slice(0,12),to=(d.to||'').slice(0,20),body=(d.b||'').slice(0,400),from=(d.f||'').slice(0,20);
+  document.title=title+(to?' · '+to:'');
+  m.innerHTML='<h1>'+esc(title)+'</h1>'+(to?'<div class="to">致 '+esc(to)+'</div>':'')+'<div class="card">'+esc(body)+(from?'<div class="from">—— '+esc(from)+'</div>':'')+'</div>';
+  var c=document.getElementById('fx'),x=c.getContext('2d'),ps=[];
+  function rs(){c.width=innerWidth;c.height=innerHeight;}rs();addEventListener('resize',rs);
+  function boom(px,py){for(var i=0;i<60;i++){var a=Math.random()*6.283,v=1+Math.random()*4;ps.push({x:px,y:py,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:60});}}
+  addEventListener('click',function(e){boom(e.clientX,e.clientY);});
+  (function loop(){x.clearRect(0,0,c.width,c.height);for(var i=ps.length-1;i>=0;i--){var p=ps[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.05;p.l--;x.fillStyle='rgba(246,212,122,'+(p.l/60)+')';x.fillRect(p.x,p.y,3,3);if(p.l<=0)ps.splice(i,1);}requestAnimationFrame(loop);})();
+  setTimeout(function(){boom(innerWidth/2,innerHeight/3);},400);
+})();
+</script>
+</body>
+</html>
