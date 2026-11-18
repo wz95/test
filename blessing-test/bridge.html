@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小爱分享桥测试</title>
+<style>body{font:16px/1.6 sans-serif;margin:16px}button{display:block;width:100%;margin:10px 0;padding:14px;font-size:17px}#log{white-space:pre-wrap;font-size:13px;color:#333;border:1px solid #ccc;padding:8px;min-height:80px}</style>
+</head>
+<body>
+<h3>小爱分享桥测试（xiaoai_share.engine）</h3>
+<button id="link">shareLink：分享贺卡网页卡片</button>
+<button id="v2">share（V2）：分享图 + 文案</button>
+<div id="log"></div>
+<script>
+var CARD = 'https://test.wengzhe.cn/blessing-test/card-v2-meta.html';
+var THUMB = 'https://test.wengzhe.cn/blessing-test/thumb-v1.jpg';
+function log(s){document.getElementById('log').textContent += s + '\n';}
+window.__blessErr = function(e){ log('error: ' + JSON.stringify(e)); };
+window.__blessOk = function(r){ log('ok: ' + JSON.stringify(r)); };
+log('xiaoai_share=' + (typeof window.xiaoai_share) + ' xiaoai=' + (typeof window.xiaoai));
+try { if (window.xiaoai && xiaoai.getJsBridgeModuleData) log('modules=' + xiaoai.getJsBridgeModuleData().slice(0, 300)); } catch (e) { log('modules err ' + e); }
+function call(name, data){
+  if (!window.xiaoai_share || !xiaoai_share.engine) { log('no xiaoai_share.engine'); return; }
+  try { var r = xiaoai_share.engine(name, JSON.stringify(data), ['__blessErr', '__blessOk']); log(name + ' returned ' + r); }
+  catch (e) { log(name + ' threw ' + e); }
+}
+document.getElementById('link').onclick = function(){
+  call('shareLink', ['给妈妈的新年贺卡', CARD, '新年快乐，愿您身体健康、笑口常开、平安喜乐、万事顺遂。', THUMB]);
+};
+document.getElementById('v2').onclick = function(){
+  call('share', {shareCopyText: '给妈妈的新年贺卡 ' + CARD, sharePicUrl: THUMB, shareBackgroundPicUrl: THUMB, isShowSharePic: true});
+};
+</script>
+</body>
+</html>
