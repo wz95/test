@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新春贺卡 · 致妈妈</title>
+<meta name="description" content="亲爱的妈妈：新岁愿您三餐四季，平安喜乐；眉目舒展，笑口常开。">
+<meta property="og:title" content="新春贺卡 · 致妈妈">
+<meta property="og:description" content="亲爱的妈妈：新岁愿您三餐四季，平安喜乐；眉目舒展，笑口常开。">
+<meta property="og:image" content="https://test.wengzhe.cn/blessing-test/card-h2-thumb.jpg">
+<meta itemprop="name" content="新春贺卡 · 致妈妈">
+<meta itemprop="description" content="亲爱的妈妈：新岁愿您三餐四季，平安喜乐；眉目舒展，笑口常开。">
+<meta itemprop="image" content="https://test.wengzhe.cn/blessing-test/card-h2-thumb.jpg">
+
+<style>
+  :root{
+    --bg1:#6E1119; --bg2:#8E1B27; --bg3:#54101A;
+    --gold:#E3B557; --gold-hi:#F7D489; --gold-lo:#B27C2A;
+    --paper:#FAF3E2; --paper2:#F2E6CC;
+    --ink:#5A1B20; --ink2:#8A4B45; --red:#B8303E; --red-d:#8E2230;
+    --disp:"Kaiti SC","STKaiti","KaiTi","楷体","Songti SC","SimSun",serif;
+    --body:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --radius:18px; --btnr:999px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--body);
+    background:radial-gradient(130% 100% at 50% 0%, var(--bg2) 0%, var(--bg1) 55%, var(--bg3) 100%);
+    background-attachment:fixed;
+    color:var(--paper);
+    min-height:100svh; overflow-x:hidden;
+  }
+  button{font-family:inherit}
+
+  /* 背景粒子画布（纯装饰，不拦截点击） */
+  #fx{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:40}
+
+  .wrap{perspective:1200px}
+
+  /* ============ 封面 ============ */
+  .cover{
+    position:relative; min-height:100svh; width:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding:clamp(28px,6vw,72px) 24px;
+    transform-origin:top center;
+  }
+  .cover.flip{animation:flapUp .95s cubic-bezier(.55,.06,.68,.19) forwards}
+  .cover.gone{display:none}
+  @keyframes flapUp{
+    0%{transform:rotateX(0deg) translateY(0); opacity:1}
+    100%{transform:rotateX(-74deg) translateY(-7vh); opacity:0}
+  }
+  .cover-inner{
+    position:relative; width:min(880px,100%);
+    display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3.5vh,34px);
+    padding:clamp(20px,4vw,48px) clamp(12px,3vw,32px) clamp(26px,5vw,44px);
+  }
+  .eyebrow{
+    font-family:var(--disp); font-size:clamp(15px,2.6vw,19px); letter-spacing:.5em;
+    color:var(--gold); text-indent:.5em; font-weight:600;
+  }
+  .eyebrow::before,.eyebrow::after{content:"❋"; font-size:.7em; color:var(--gold-lo); margin:0 .6em; display:inline-block}
+  .title-row{display:flex; align-items:center; justify-content:center; gap:clamp(18px,4vw,40px); flex-wrap:wrap}
+  .title{
+    display:flex; flex-direction:column; align-items:center; gap:.14em;
+    font-family:var(--disp); font-weight:700; line-height:1.08;
+    font-size:clamp(3.3rem,16vw,6.6rem);
+    background:linear-gradient(180deg,#FBE6B0 0%,#EEC46A 46%,#C08A33 82%,#A96F22 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.38));
+  }
+  .stamp{
+    width:clamp(68px,14vw,92px); height:clamp(68px,14vw,92px); border-radius:50%; flex:none;
+    background:radial-gradient(circle at 34% 28%, #E03A4B, #A81F2E 70%);
+    border:3px solid var(--gold-hi);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--disp); font-size:clamp(36px,9vw,52px); color:var(--gold-hi);
+    box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 0 0 4px rgba(0,0,0,.14);
+  }
+  .to{
+    font-family:var(--disp); font-size:clamp(20px,4.5vw,30px); letter-spacing:.28em; text-indent:.28em;
+    color:var(--paper); font-weight:600;
+  }
+  .to b{color:var(--gold-hi)}
+  .open-btn{
+    appearance:none; border:none; cursor:pointer;
+    background:linear-gradient(180deg,var(--gold-hi) 0%,var(--gold) 55%,#C9983B 100%);
+    color:var(--ink); font-size:clamp(16px,3.4vw,19px); font-weight:700; letter-spacing:.2em; text-indent:.2em;
+    padding:15px 42px; border-radius:var(--btnr);
+    box-shadow:0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5);
+    transition:transform .25s cubic-bezier(.28,.11,.32,1), filter .25s;
+  }
+  .open-btn:hover{transform:translateY(-3px); filter:brightness(1.05)}
+  .open-btn:active{transform:translateY(0); filter:brightness(.96)}
+  .open-btn:focus-visible{outline:3px solid var(--gold-hi); outline-offset:3px}
+  .hint{font-size:clamp(12px,2.4vw,14px); letter-spacing:.3em; text-indent:.3em; color:rgba(247,212,137,.82)}
+
+  /* 祥云暗纹 */
+  .cloud{position:absolute; opacity:.16; pointer-events:none}
+  .cloud.c1{top:9%; left:5%; width:min(240px,30vw)}
+  .cloud.c2{bottom:10%; right:4%; width:min(300px,38vw); transform:scaleX(-1)}
+
+  /* ============ 内页 ============ */
+  .content{
+    opacity:0; transform:translateY(36px); pointer-events:none;
+    transition:opacity .7s ease .18s, transform .7s ease .18s;
+    padding:clamp(18px,4.5vw,44px) clamp(12px,3vw,32px) clamp(36px,7vw,64px);
+    display:flex; justify-content:center;
+  }
+  .content.show{opacity:1; transform:none; pointer-events:auto}
+  .paper{
+    position:relative; width:min(900px,100%);
+    background:linear-gradient(180deg,var(--paper) 0%,var(--paper2) 100%);
+    border-radius:var(--radius);
+    border:1px solid rgba(227,181,87,.6);
+    padding:clamp(26px,5.5vw,60px) clamp(20px,5vw,56px) clamp(30px,6vw,60px);
+    color:var(--ink);
+    box-shadow:0 34px 90px rgba(0,0,0,.4);
+  }
+  .corner{position:absolute; width:36px; height:36px; border:2px solid rgba(178,124,42,.55); pointer-events:none}
+  .corner.tl{top:12px; left:12px; border-right:none; border-bottom:none; border-radius:12px 0 0 0}
+  .corner.tr{top:12px; right:12px; border-left:none; border-bottom:none; border-radius:0 12px 0 0}
+  .corner.bl{bottom:12px; left:12px; border-right:none; border-top:none; border-radius:0 0 0 12px}
+  .corner.br{bottom:12px; right:12px; border-left:none; border-top:none; border-radius:0 0 12px 0}
+
+  .blossom-branch{display:block; margin:-8px auto 10px; width:min(340px,88%); height:auto}
+
+  .paper h2{
+    text-align:center; font-family:var(--disp); font-weight:700;
+    font-size:clamp(30px,7vw,44px); color:var(--red-d); letter-spacing:.12em;
+  }
+  .paper h2::before,.paper h2::after{
+    content:""; display:inline-block; width:clamp(28px,6vw,54px); height:2px;
+    background:linear-gradient(90deg,transparent,rgba(178,124,42,.7),transparent);
+    vertical-align:middle; margin:0 clamp(8px,2vw,16px);
+  }
+  .sub{
+    text-align:center; font-size:clamp(13px,2.8vw,15px); letter-spacing:.35em; text-indent:.35em;
+    color:var(--ink2); margin:10px 0 22px;
+  }
+  .poem{
+    text-align:center; font-size:clamp(15px,3.4vw,17.5px); line-height:2; color:var(--ink);
+    padding:6px 4px 4px;
+  }
+  .poem .hi{color:var(--red-d); font-weight:600}
+  .bless-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:clamp(10px,2.4vw,16px); margin:26px 0 6px;
+  }
+  .ticket{
+    background:linear-gradient(160deg,#F8EBC9 0%,#EED9A2 100%);
+    border:1px solid rgba(178,124,42,.38); border-radius:14px;
+    padding:16px 10px 13px; text-align:center;
+  }
+  .ticket .main{
+    font-family:var(--disp); font-weight:700; font-size:clamp(21px,4.6vw,27px);
+    color:var(--red-d); letter-spacing:.14em; writing-mode:vertical-rl; height:3.2em;
+    margin:0 auto;
+  }
+  .ticket .sub2{font-size:clamp(12px,2.6vw,13.5px); color:var(--ink2); letter-spacing:.18em; margin-top:4px}
+
+  .lantern-zone{margin:30px 0 8px; text-align:center}
+  .lantern-line{height:2px; width:min(430px,100%); margin:0 auto 4px;
+    background:linear-gradient(90deg,transparent,rgba(122,74,31,.5),transparent)}
+  .lantern-tip{font-size:clamp(13px,3vw,15px); color:var(--ink2); letter-spacing:.1em; margin-bottom:8px}
+  .lanterns{display:flex; justify-content:center; gap:clamp(2px,1.6vw,10px); flex-wrap:wrap}
+  .lantern{
+    background:none; border:none; cursor:pointer; padding:6px 4px;
+    width:clamp(56px,13vw,72px); transition:transform .25s;
+  }
+  .lantern:hover{transform:translateY(-5px)}
+  .lantern:focus-visible{outline:3px solid var(--red); outline-offset:2px; border-radius:12px}
+  .lantern svg{display:block; width:100%; height:auto}
+  .lantern .body{fill:#C93A45; transition:fill .45s ease}
+  .lantern .trim{fill:#7a4a1f}
+  .lantern.lit .body{fill:#FF7A45}
+  .lantern.lit{filter:drop-shadow(0 0 12px rgba(255,150,70,.95))}
+  .lantern-note{
+    margin:14px auto 0; font-family:var(--disp); font-weight:700;
+    font-size:clamp(17px,4vw,22px); color:var(--red-d); letter-spacing:.18em;
+    opacity:0; transform:translateY(8px); transition:opacity .6s ease .1s, transform .6s ease .1s;
+  }
+  .lantern-note.shown{opacity:1; transform:none}
+
+  .sign{text-align:right; margin-top:30px; font-family:var(--disp); font-size:clamp(16px,3.6vw,19px); letter-spacing:.12em; color:var(--ink)}
+  .sign::before{content:"— "; color:var(--gold-lo)}
+  .year{text-align:center; margin-top:10px; font-size:clamp(12px,2.6vw,13.5px); letter-spacing:.4em; text-indent:.4em; color:var(--ink2)}
+  .back-btn{
+    display:block; margin:26px auto 0; appearance:none; cursor:pointer;
+    background:transparent; border:1.5px solid var(--gold-lo); color:var(--ink2);
+    font-size:clamp(14px,3vw,15px); font-weight:700; letter-spacing:.22em; text-indent:.22em;
+    padding:11px 34px; border-radius:var(--btnr); transition:all .25s;
+  }
+  .back-btn:hover{background:var(--gold-lo); color:var(--paper)}
+  .back-btn:focus-visible{outline:3px solid var(--gold-lo); outline-offset:3px}
+
+  @media (prefers-reduced-motion: reduce){
+    .cover.flip{animation-duration:.01s}
+    .content{transition:none}
+    html{scroll-behavior:auto}
+    .lantern,.open-btn,.back-btn{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <!-- ===== 封面 ===== -->
+  <section class="cover" id="cover" aria-label="贺卡封面">
+    <svg class="cloud c1" viewBox="0 0 120 60" aria-hidden="true"><path d="M22 42 Q6 42 6 30 Q6 18 20 18 Q22 6 36 6 Q50 6 52 20 Q64 18 68 28 Q72 40 58 40 Z" fill="#F7D489"/></svg>
+    <svg class="cloud c2" viewBox="0 0 120 60" aria-hidden="true"><path d="M22 42 Q6 42 6 30 Q6 18 20 18 Q22 6 36 6 Q50 6 52 20 Q64 18 68 28 Q72 40 58 40 Z" fill="#F7D489"/></svg>
+    <div class="cover-inner">
+      <p class="eyebrow">丁未年 · 新春</p>
+      <div class="title-row">
+        <h1 class="title" aria-label="新春快乐">
+          <span>新</span><span>春</span><span>快</span><span>乐</span>
+        </h1>
+        <div class="stamp" aria-hidden="true">福</div>
+      </div>
+      <p class="to">致&nbsp;·&nbsp;<b>亲爱的妈妈</b></p>
+      <button class="open-btn" id="openBtn">轻触开启</button>
+      <p class="hint">愿时光温柔 · 待您如初</p>
+    </div>
+  </section>
+
+  <!-- ===== 内页 ===== -->
+  <section class="content" id="content" aria-label="贺卡内页">
+    <div class="paper">
+      <span class="corner tl" aria-hidden="true"></span>
+      <span class="corner tr" aria-hidden="true"></span>
+      <span class="corner bl" aria-hidden="true"></span>
+      <span class="corner br" aria-hidden="true"></span>
+
+      <!-- 梅花枝 -->
+      <svg class="blossom-branch" viewBox="0 0 340 112" aria-hidden="true" role="img">
+        <path d="M-6 106 C 60 84, 150 66, 336 12" stroke="#5A1B20" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M128 76 C 150 52, 178 40, 206 34" stroke="#5A1B20" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M236 30 C 252 18, 274 12, 298 8" stroke="#5A1B20" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <g transform="translate(206,30)"><circle cx="0" cy="-6.5" r="4.4" fill="#B8303E"/><circle cx="6.2" cy="2" r="4.4" fill="#B8303E"/><circle cx="3.8" cy="8.3" r="4.4" fill="#B8303E"/><circle cx="-3.8" cy="8.3" r="4.4" fill="#B8303E"/><circle cx="-6.2" cy="2" r="4.4" fill="#B8303E"/><circle r="2.8" fill="#F0C96A"/></g>
+        <g transform="translate(298,4)"><circle cx="0" cy="-6.5" r="4.4" fill="#B8303E"/><circle cx="6.2" cy="2" r="4.4" fill="#B8303E"/><circle cx="3.8" cy="8.3" r="4.4" fill="#B8303E"/><circle cx="-3.8" cy="8.3" r="4.4" fill="#B8303E"/><circle cx="-6.2" cy="2" r="4.4" fill="#B8303E"/><circle r="2.8" fill="#F0C96A"/></g>
+        <g transform="translate(258,18)"><circle cx="0" cy="-6" r="4" fill="#D97B8A"/><circle cx="5.7" cy="1.9" r="4" fill="#D97B8A"/><circle cx="3.5" cy="7.6" r="4" fill="#D97B8A"/><circle cx="-3.5" cy="7.6" r="4" fill="#D97B8A"/><circle cx="-5.7" cy="1.9" r="4" fill="#D97B8A"/><circle r="2.5" fill="#E9BE64"/></g>
+        <g transform="translate(148,60)"><circle cx="0" cy="-5.5" r="3.6" fill="#D97B8A"/><circle cx="5.2" cy="1.7" r="3.6" fill="#D97B8A"/><circle cx="3.2" cy="7" r="3.6" fill="#D97B8A"/><circle cx="-3.2" cy="7" r="3.6" fill="#D97B8A"/><circle cx="-5.2" cy="1.7" r="3.6" fill="#D97B8A"/><circle r="2.2" fill="#E9BE64"/></g>
+      </svg>
+
+      <h2>妈妈，新年快乐</h2>
+      <p class="sub">一封写给妈妈的新年家书</p>
+
+      <div class="poem">
+        <p>亲爱的妈妈：</p>
+        <p>又是一年灯火可亲时，</p>
+        <p>感谢您把四季操劳成暖阳，</p>
+        <p>把叮咛织成牵挂。</p>
+        <p class="hi">新岁愿您——</p>
+        <p>三餐四季，平安喜乐；</p>
+        <p>眉目舒展，笑口常开。</p>
+        <p class="hi">您的安康，是儿女最大的福气。</p>
+      </div>
+
+      <div class="bless-grid">
+        <div class="ticket"><div class="main">平安喜乐</div><div class="sub2">岁岁常欢</div></div>
+        <div class="ticket"><div class="main">身体健康</div><div class="sub2">百事顺遂</div></div>
+        <div class="ticket"><div class="main">笑口常开</div><div class="sub2">青春常在</div></div>
+        <div class="ticket"><div class="main">三阳开泰</div><div class="sub2">福暖四季</div></div>
+      </div>
+
+      <div class="lantern-zone">
+        <div class="lantern-line" aria-hidden="true"></div>
+        <p class="lantern-tip">轻触小灯笼，为妈妈点亮新年心愿</p>
+        <div class="lanterns" role="group" aria-label="点亮新年心愿的灯笼">
+          <button class="lantern" aria-label="点亮第一个灯笼">
+            <svg viewBox="0 0 56 96" aria-hidden="true">
+              <line x1="28" y1="3" x2="28" y2="14" stroke="#7a4a1f" stroke-width="2.5" stroke-linecap="round"/>
+              <rect class="trim" x="21" y="12" width="14" height="6" rx="3"/>
+              <path class="trim" d="M13 20 Q28 14 43 20 L43 27 Q28 23 13 27 Z"/>
+              <path class="body" d="M13 29 Q28 23 43 29 L43 64 Q28 70 13 64 Z"/>
+              <rect class="trim" x="21" y="68" width="14" height="6" rx="3"/>
+              <line x1="28" y1="74" x2="28" y2="90" stroke="#7a4a1f" stroke-width="2"/>
+              <circle cx="28" cy="92" r="3" fill="#C93A45"/>
+            </svg>
+          </button>
+          <button class="lantern" aria-label="点亮第二个灯笼">
+            <svg viewBox="0 0 56 96" aria-hidden="true">
+              <line x1="28" y1="3" x2="28" y2="14" stroke="#7a4a1f" stroke-width="2.5" stroke-linecap="round"/>
+              <rect class="trim" x="21" y="12" width="14" height="6" rx="3"/>
+              <path class="trim" d="M13 20 Q28 14 43 20 L43 27 Q28 23 13 27 Z"/>
+              <path class="body" d="M13 29 Q28 23 43 29 L43 64 Q28 70 13 64 Z"/>
+              <rect class="trim" x="21" y="68" width="14" height="6" rx="3"/>
+              <line x1="28" y1="74" x2="28" y2="90" stroke="#7a4a1f" stroke-width="2"/>
+              <circle cx="28" cy="92" r="3" fill="#C93A45"/>
+            </svg>
+          </button>
+          <button class="lantern" aria-label="点亮第三个灯笼">
+            <svg viewBox="0 0 56 96" aria-hidden="true">
+              <line x1="28" y1="3" x2="28" y2="14" stroke="#7a4a1f" stroke-width="2.5" stroke-linecap="round"/>
+              <rect class="trim" x="21" y="12" width="14" height="6" rx="3"/>
+              <path class="trim" d="M13 20 Q28 14 43 20 L43 27 Q28 23 13 27 Z"/>
+              <path class="body" d="M13 29 Q28 23 43 29 L43 64 Q28 70 13 64 Z"/>
+              <rect class="trim" x="21" y="68" width="14" height="6" rx="3"/>
+              <line x1="28" y1="74" x2="28" y2="90" stroke="#7a4a1f" stroke-width="2"/>
+              <circle cx="28" cy="92" r="3" fill="#C93A45"/>
+            </svg>
+          </button>
+          <button class="lantern" aria-label="点亮第四个灯笼">
+            <svg viewBox="0 0 56 96" aria-hidden="true">
+              <line x1="28" y1="3" x2="28" y2="14" stroke="#7a4a1f" stroke-width="2.5" stroke-linecap="round"/>
+              <rect class="trim" x="21" y="12" width="14" height="6" rx="3"/>
+              <path class="trim" d="M13 20 Q28 14 43 20 L43 27 Q28 23 13 27 Z"/>
+              <path class="body" d="M13 29 Q28 23 43 29 L43 64 Q28 70 13 64 Z"/>
+              <rect class="trim" x="21" y="68" width="14" height="6" rx="3"/>
+              <line x1="28" y1="74" x2="28" y2="90" stroke="#7a4a1f" stroke-width="2"/>
+              <circle cx="28" cy="92" r="3" fill="#C93A45"/>
+            </svg>
+          </button>
+          <button class="lantern" aria-label="点亮第五个灯笼">
+            <svg viewBox="0 0 56 96" aria-hidden="true">
+              <line x1="28" y1="3" x2="28" y2="14" stroke="#7a4a1f" stroke-width="2.5" stroke-linecap="round"/>
+              <rect class="trim" x="21" y="12" width="14" height="6" rx="3"/>
+              <path class="trim" d="M13 20 Q28 14 43 20 L43 27 Q28 23 13 27 Z"/>
+              <path class="body" d="M13 29 Q28 23 43 29 L43 64 Q28 70 13 64 Z"/>
+              <rect class="trim" x="21" y="68" width="14" height="6" rx="3"/>
+              <line x1="28" y1="74" x2="28" y2="90" stroke="#7a4a1f" stroke-width="2"/>
+              <circle cx="28" cy="92" r="3" fill="#C93A45"/>
+            </svg>
+          </button>
+        </div>
+        <p class="lantern-note" id="note">愿妈妈岁岁平安 · 福气盈门</p>
+      </div>
+
+      <p class="sign">爱您的孩子 敬上</p>
+      <p class="year">丁未年新春 · 2027</p>
+
+      <button class="back-btn" id="backBtn">回到封面</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  /* ===== 粒子画布：飘落花瓣 + 点击烟花 ===== */
+  var cv = document.getElementById('fx'), ctx = cv.getContext('2d');
+  var W = 0, H = 0;
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var COLORS = ['#F2A0A8','#E9808B','#F6C3C8','#FBE3DE'];
+  var petals = [], parts = [];
+  function mkPetal(anywhere){
+    petals.push({
+      x: Math.random() * W,
+      y: anywhere ? Math.random() * H : -20,
+      r: 2.5 + Math.random() * 3.5,
+      vy: 0.3 + Math.random() * 0.55,
+      vx: (Math.random() - 0.5) * 0.25,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.025,
+      ph: Math.random() * Math.PI * 2,
+      sw: 0.4 + Math.random() * 0.6,
+      c: COLORS[Math.floor(Math.random() * COLORS.length)],
+      a: 0.3 + Math.random() * 0.35
+    });
+  }
+  var N = reduced ? 6 : 26;
+  for (var i = 0; i < N; i++) mkPetal(true);
+
+  function burst(x, y){
+    var cols = ['#F7D489','#E3B557','#FF9A6B','#FFD9A0'];
+    for (var i = 0; i < 34; i++){
+      var ang = Math.random() * Math.PI * 2;
+      var sp = 1.2 + Math.random() * 3.6;
+      parts.push({ x:x, y:y, vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp - 1.2, life:1,
+        dec:0.014 + Math.random()*0.012, r:1.4 + Math.random()*1.8, c:cols[i % cols.length] });
+    }
+  }
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < petals.length; i++){
+      var p = petals[i];
+      p.ph += 0.03;
+      p.x += p.vx + Math.sin(p.ph) * p.sw * 0.35;
+      p.y += p.vy; p.rot += p.vr;
+      if (p.y > H + 16 || p.x < -16 || p.x > W + 16){ p.x = Math.random() * W; p.y = -16; }
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = p.a; ctx.fillStyle = p.c;
+      ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.62, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+    for (var j = parts.length - 1; j >= 0; j--){
+      var q = parts[j];
+      q.life -= q.dec;
+      if (q.life <= 0){ parts.splice(j, 1); continue; }
+      q.vx *= 0.985; q.vy *= 0.985; q.vy += 0.045;
+      q.x += q.vx; q.y += q.vy;
+      ctx.globalAlpha = Math.max(q.life, 0); ctx.fillStyle = q.c;
+      ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);   // 显式启动动画循环
+  window.burstFX = burst;
+
+  /* ===== 封面翻开 / 返回 ===== */
+  var cover = document.getElementById('cover');
+  var content = document.getElementById('content');
+  var openBtn = document.getElementById('openBtn');
+  var backBtn = document.getElementById('backBtn');
+
+  function fireAt(el){
+    var r = el.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+  }
+
+  openBtn.addEventListener('click', function(){
+    if (cover.classList.contains('flip')) return;
+    cover.classList.add('flip');
+    window.scrollTo(0, 0);
+    fireAt(openBtn);
+    setTimeout(function(){
+      cover.classList.add('gone');
+      content.classList.add('show');
+      window.scrollTo(0, 0);
+    }, 880);
+  });
+
+  backBtn.addEventListener('click', function(){
+    content.classList.remove('show');
+    setTimeout(function(){
+      cover.classList.remove('gone', 'flip');
+      window.scrollTo(0, 0);
+    }, 520);
+  });
+
+  /* ===== 点亮灯笼 ===== */
+  var lanterns = Array.prototype.slice.call(document.querySelectorAll('.lantern'));
+  var lit = 0;
+  var note = document.getElementById('note');
+  lanterns.forEach(function(el){
+    el.addEventListener('click', function(){
+      if (el.classList.contains('lit')) return;
+      el.classList.add('lit');
+      lit++;
+      fireAt(el);
+      if (lit === lanterns.length) note.classList.add('shown');
+    });
+  });
+})();
+</script>
+
+<script>(function(){
+var d=document,b=d.body;if(!b)return;
+var old=b.querySelectorAll('[data-aigc-mark],#__xas_aigc_watermark__');
+for(var k=0;k<old.length;k++)old[k].parentNode&&old[k].parentNode.removeChild(old[k]);
+var f=d.createElement("div");
+f.id="__xas_aigc_watermark__";
+f.setAttribute("data-aigc-mark","true");
+f.style.cssText="position:fixed;bottom:8px;right:12px;z-index:2147483647;font-size:11px;padding:3px 7px;font-family:system-ui,sans-serif;pointer-events:none;color:rgba(30,30,30,0.6);background:rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.08);border-radius:4px;line-height:1.4;backdrop-filter:blur(8px);";
+var paths=["M14.0072 26.6377C14.2318 25.9475 13.3696 25.4389 12.8659 25.9611C9.56694 29.3941 6.9736 33.4696 5.35587 37.9788C-0.86998 55.1279 7.72006 74.1728 24.7867 80.6891C33.1499 83.8815 41.0252 82.7894 44.7212 81.8812C54.0056 79.6016 63.1537 72.4609 66.7114 63.4447C67.1039 62.4525 66.6252 61.3286 65.6404 60.9222C63.78 60.1548 61.9263 59.3896 60.3721 58.7471C59.46 58.3702 58.4117 58.7402 57.9398 59.6076C56.4287 62.3753 54.8496 65.0568 52.4945 67.2274C46.0349 73.5893 36.1675 75.8621 27.5956 72.9036C14.6833 68.6487 7.76998 54.5307 12.124 41.7683C12.3668 41.0553 12.4916 40.3038 12.4621 39.55C12.242 33.8125 12.8228 30.2955 14.0072 26.6377Z","M73.6785 14.313C74.3682 14.5378 74.8765 13.675 74.3546 13.171C70.9241 9.86968 66.8514 7.27451 62.3454 5.65564C45.2084 -0.574603 26.1769 8.0215 19.6651 25.1002C16.4751 33.4692 17.5664 41.3501 18.474 45.0488C20.7519 54.3396 27.8876 63.4943 36.8974 67.0544C37.8889 67.4472 39.012 66.9681 39.4182 65.9827C40.185 64.1209 40.9497 62.2659 41.5918 60.7107C41.9684 59.7979 41.5986 58.7489 40.7318 58.2767C37.9661 56.7645 35.2865 55.1843 33.1174 52.8275C26.76 46.3634 24.4888 36.489 27.4452 27.9111C31.6971 14.9897 45.8051 8.07145 58.5586 12.4285C59.271 12.6715 60.022 12.7964 60.7753 12.7668C66.5088 12.5466 70.0233 13.1278 73.6785 14.313Z","M85.9922 73.9549C85.7676 74.6451 86.6298 75.1537 87.1335 74.6315C90.4324 71.1985 93.0258 67.123 94.6435 62.6138C100.869 45.4647 92.2793 26.4198 75.2127 19.9035C66.8495 16.7111 58.9742 17.8033 55.2782 18.7114C45.9938 20.991 36.8456 28.1317 33.288 37.1479C32.8955 38.1401 33.3742 39.264 34.3589 39.6704C36.2194 40.4378 38.0731 41.203 39.6273 41.8455C40.5394 42.2224 41.5876 41.8524 42.0596 40.985C43.5706 38.2173 45.1498 35.5358 47.5049 33.3652C53.9645 27.0033 63.8319 24.7305 72.4038 27.689C85.3161 31.9439 92.2294 46.0619 87.8754 58.8243C87.6326 59.5373 87.5078 60.2888 87.5373 61.0426C87.7574 66.7801 87.1766 70.2971 85.9922 73.9549Z","M26.2674 86.2849C25.5777 86.0601 25.0694 86.9229 25.5913 87.4269C29.0219 90.7282 33.0945 93.3234 37.6028 94.9423C54.7398 101.173 73.7713 92.5764 80.2831 75.4977C83.4731 67.1287 82.3818 59.2478 81.4742 55.5491C79.1963 46.2583 72.0606 37.1036 63.0508 33.5435C62.0593 33.1507 60.9362 33.6298 60.53 34.6152C59.7632 36.477 58.9985 38.3297 58.3564 39.885C57.9798 40.7977 58.3496 41.8467 59.2163 42.3212C61.9821 43.8334 64.6617 45.4114 66.8285 47.7704C73.1859 54.2345 75.4571 64.1089 72.5007 72.6869C68.2488 85.6082 54.1408 92.5265 41.3874 88.1694C40.6749 87.9264 39.9239 87.8015 39.1706 87.8311C33.4371 88.0513 29.9226 87.4701 26.2674 86.2826V86.2849Z"];
+b.appendChild(f);
+var svg='<svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline;vertical-align:-2px;margin:0 4px">';
+for(var i=0;i<paths.length;i++)svg+='<path d="'+paths[i]+'" fill="rgba(30,30,30,0.5)"/>';
+svg+="</svg>";
+f.innerHTML="本页面由"+svg+"超级小爱AI生成";
+})();</script>
+</body>
+</html>
