@@ -39,7 +39,7 @@ document.getElementById('go').onclick = function () {
   if (!window.xiaoai || !xiaoai.engine) { log('no xiaoai.engine (not inside xiaoai web container)'); return; }
   var uri = intentUri(PROMPT);
   log('startService ' + uri);
-  try { var r = xiaoai.engine('startService', JSON.stringify(uri), ['__guideErr', '__guideOk']); log('returned ' + r); }
+  try { var r = xiaoai.engine('startService', uri, ['__guideErr', '__guideOk']); log('returned ' + r); }
   catch (e) { log('threw ' + e); }
 };
 </script>
