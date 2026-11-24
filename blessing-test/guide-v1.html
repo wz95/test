@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新年送祝福 · 功能引导（测试）</title>
+<style>
+  body { margin: 0; font-family: -apple-system, "PingFang SC", sans-serif; background: linear-gradient(#b3121f, #7a0a13); color: #fbe7c2; min-height: 100vh; }
+  .wrap { padding: 72px 28px 40px; text-align: center; }
+  h1 { font-size: 34px; margin: 0 0 12px; letter-spacing: 4px; }
+  p { font-size: 16px; line-height: 1.7; color: #fff1d8; margin: 0 0 28px; }
+  .prompt { background: rgba(255,255,255,.12); border-radius: 12px; padding: 14px 16px; font-size: 15px; margin: 0 0 32px; }
+  button { width: 100%; max-width: 320px; height: 52px; border: 0; border-radius: 26px; background: #f2c46d; color: #7a0a13; font-size: 18px; font-weight: 600; }
+  #log { margin-top: 28px; text-align: left; font: 12px/1.5 monospace; color: #ffd9a8; white-space: pre-wrap; word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>新年送祝福</h1>
+  <p>用妈妈的照片，一句话做一张新年贺卡，<br>可以直接分享到微信。</p>
+  <div class="prompt" id="prompt">用妈妈的照片给她做一张新年贺卡</div>
+  <button id="go">去试试</button>
+  <div id="log"></div>
+</div>
+<script>
+var PROMPT = document.getElementById('prompt').textContent;
+function log(s) { document.getElementById('log').textContent += s + '\n'; }
+window.__guideErr = function (e) { log('error: ' + JSON.stringify(e)); };
+window.__guideOk = function (r) { log('ok: ' + JSON.stringify(r)); };
+log('xiaoai=' + (typeof window.xiaoai) + ' engine=' + (window.xiaoai && typeof window.xiaoai.engine));
+function intentUri(text) {
+  return 'intent:#Intent;action=com.xiaomi.voiceassistant.action.PREFILL_EXPERT_INPUT;'
+    + 'component=com.miui.voiceassist/com.xiaomi.voiceassistant.SpeechQueryService;'
+    + 'S.com.xiaomi.voiceassistant.extra.INPUT_TEXT=' + encodeURIComponent(text) + ';'
+    + 'S.com.xiaomi.voiceassistant.extra.SOURCE=guide_h5_test;'
+    + 'i.com.xiaomi.voiceassistant.extra.PROTOCOL_VERSION=1;end';
+}
+document.getElementById('go').onclick = function () {
+  if (!window.xiaoai || !xiaoai.engine) { log('no xiaoai.engine (not inside xiaoai web container)'); return; }
+  var uri = intentUri(PROMPT);
+  log('startService ' + uri);
+  try { var r = xiaoai.engine('startService', JSON.stringify(uri), ['__guideErr', '__guideOk']); log('returned ' + r); }
+  catch (e) { log('threw ' + e); }
+};
+</script>
+</body>
+</html>
