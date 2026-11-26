@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>超级小爱祝福季</title>
+<title>超级小爱新春祝福季</title>
 <style>
   :root {
     --paper: #f7efe2;
@@ -171,7 +171,7 @@
 </head>
 <body>
 <main class="page">
-  <p class="label">✿ 看看别人送出的心意</p>
+  <p class="label">✿ 看看别人送出的新春心意</p>
   <h1 class="serif">写给朋友和爱的人</h1>
   <p class="sub">点「查看」看成品，点「做同款」拿到那句话，把小事换成你们自己的</p>
   <section class="grid" id="grid"></section>
@@ -181,7 +181,7 @@
       <div class="step"><div class="num">2</div>粘贴那句话<br>换成你们的小事</div>
       <div class="step"><div class="num">3</div>等几分钟<br>贺卡就做好了</div>
     </div>
-    <p class="caption">像小时候等贺卡寄过来一样，等几分钟就好。<br>退出 App 也会继续做，做好了会告诉你。</p>
+    <p class="caption">像小时候盼着过年一样，等几分钟就好。<br>退出 App 也会继续做，做好了会告诉你。</p>
   </section>
 </main>
 
@@ -215,6 +215,7 @@
       'S.' + EXTRA + 'SOURCE=' + encodeURIComponent(source || 'blessing_guide_h5') + ';' +
       'S.' + EXTRA + 'REQUEST_ID=' + requestId + ';' +
       'B.' + EXTRA + 'AUTO_SEND=false;' +
+      'S.' + EXTRA + 'TARGET=current;' +
       'i.' + EXTRA + 'PROTOCOL_VERSION=1;end';
     window.xiaoai.engine('startService', uri, ['__xiaoaiPrefillErr', '__xiaoaiPrefillOk']);
     return true;
@@ -222,12 +223,12 @@
 })();
 
 (function () {
-  var PROMPT = '帮我做一个像小时候手工贺卡一样的圣诞网页，送给我从小学就认识的好友阿杰。要有蜡笔字、彩纸剪的雪花和歪歪扭扭的圣诞树。点开后写：「还记得三年级你把唯一一块橡皮掰了一半给我吗？二十年了，圣诞快乐。」';
+  var PROMPT = '帮我做一个像小时候过年贴的窗花一样的新年网页，送给我从小一起长大的发小阿杰。要有毛笔字、红纸剪的窗花和噼里啪啦的鞭炮。点开后写：「还记得那年除夕，我们俩偷偷点了一挂鞭炮，把隔壁家的大黄狗吓得满院子跑吗？二十年了，新年快乐。」';
   var CARDS = [
-    { tag: '网页', emoji: '🖍️', bg: '#f4d9c6', title: '给多年好友', desc: '像当年塞进你课桌的那张贺卡' },
-    { tag: '网页', emoji: '📒', bg: '#f3d3d6', title: '给认识十年的闺蜜', desc: '一页装下你们的十年' },
-    { tag: '图片', emoji: '🌙', bg: '#d6e0f0', title: '给异地的TA', desc: '画一张贺卡：隔着 1800 公里，也一起过圣诞' },
-    { tag: '视频 · 会员', emoji: '🎅', bg: '#f5e6c8', title: '给家里的孩子', desc: '圣诞老人给孩子的一段祝福视频' }
+    { tag: '网页', emoji: '🧨', bg: '#f6d6c8', title: '给多年好友', desc: '像小时候一起放鞭炮的那个除夕' },
+    { tag: '网页', emoji: '🏮', bg: '#f3d3d6', title: '给认识十年的闺蜜', desc: '一页装下你们一起过的十个新年' },
+    { tag: '图片', emoji: '🎆', bg: '#d6e0f0', title: '给异地的TA', desc: '画一张贺卡：隔着 1800 公里，也一起守岁' },
+    { tag: '视频 · 会员', emoji: '🧧', bg: '#f5e6c8', title: '给家里的孩子', desc: '财神爷给孩子拜年、发压岁钱的一段视频' }
   ];
 
   var grid = document.getElementById('grid');
