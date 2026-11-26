@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>超级小爱祝福季</title>
+<style>
+  :root {
+    --paper: #f7efe2;
+    --ink: #2b211a;
+    --muted: #7a6a5c;
+    --brick: #b23a2b;
+    --brick-dark: #962e21;
+    --leaf: #5b7a4a;
+    --line: #c9b49a;
+    --sheet: #fbf6ee;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(rgba(120, 90, 60, .05) 1px, transparent 1px),
+      radial-gradient(rgba(120, 90, 60, .04) 1px, transparent 1px);
+    background-size: 7px 7px, 11px 11px;
+    background-position: 0 0, 3px 5px;
+    color: var(--ink);
+    font-family: -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.locked { overflow: hidden; }
+  .serif { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif; }
+  .page {
+    padding: calc(20px + env(safe-area-inset-top)) 18px calc(32px + env(safe-area-inset-bottom));
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .label { color: var(--leaf); font-size: 13px; letter-spacing: .5px; margin: 0 0 8px; }
+  h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px; letter-spacing: 1px; }
+  .sub { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0 0 18px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(60, 40, 20, .06), 0 4px 14px rgba(60, 40, 20, .07);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .art {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    margin: 8px 8px 0;
+    border-radius: 10px;
+  }
+  .tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(43, 33, 26, .88);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
+    padding: 5px 8px;
+    border-radius: 999px;
+  }
+  .body { padding: 10px 12px 12px; display: flex; flex-direction: column; flex: 1; }
+  .title { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+  .desc { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 0 0 12px; flex: 1; }
+  .btns { display: flex; gap: 8px; }
+  .btn {
+    flex: 1;
+    height: 36px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-view { background: #fff; color: var(--ink); border-color: #b9a58d; }
+  .btn-view:active { background: #f4ece1; }
+  .btn-make { background: var(--brick); color: #fff; }
+  .btn-make:active { background: var(--brick-dark); }
+  .how {
+    margin-top: 18px;
+    background: #fbf4e8;
+    border: 1.5px dashed var(--line);
+    border-radius: 14px;
+    padding: 16px 10px 14px;
+  }
+  .steps { display: flex; justify-content: space-between; }
+  .step { flex: 1; text-align: center; font-size: 12px; line-height: 1.55; color: var(--ink); }
+  .num {
+    width: 26px;
+    height: 26px;
+    margin: 0 auto 6px;
+    border: 1.5px solid var(--brick);
+    color: var(--brick);
+    border-radius: 50%;
+    font-size: 13px;
+    line-height: 23px;
+    font-weight: 600;
+  }
+  .caption { margin: 12px 0 0; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.7; }
+  .mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 10;
+  }
+  .sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--sheet);
+    border-radius: 18px 18px 0 0;
+    padding: 20px 18px calc(18px + env(safe-area-inset-bottom));
+    transform: translateY(105%);
+    transition: transform .25s ease;
+    z-index: 11;
+  }
+  .open .mask { opacity: 1; pointer-events: auto; }
+  .open .sheet { transform: translateY(0); }
+  .sheet h2 { font-size: 20px; margin: 0 0 6px; }
+  .hint { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 0 0 12px; }
+  .prompt {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    user-select: text;
+    -webkit-user-select: text;
+    margin: 0 0 10px;
+  }
+  .flow { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 0 0 14px; }
+  .sheet .btns .btn { height: 44px; font-size: 15px; }
+  .btn-close { background: #efe3cf; color: #6b5340; }
+  .btn-close:active { background: #e6d6bc; }
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(220px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    background: rgba(43, 33, 26, .92);
+    color: #fff;
+    font-size: 13px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+    z-index: 12;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<main class="page">
+  <p class="label">✿ 看看别人送出的心意</p>
+  <h1 class="serif">写给朋友和爱的人</h1>
+  <p class="sub">点「查看」看成品，点「做同款」拿到那句话，把小事换成你们自己的</p>
+  <section class="grid" id="grid"></section>
+  <section class="how">
+    <div class="steps">
+      <div class="step"><div class="num">1</div>打开超级小爱<br>切到「专家模式」</div>
+      <div class="step"><div class="num">2</div>粘贴那句话<br>换成你们的小事</div>
+      <div class="step"><div class="num">3</div>等几分钟<br>贺卡就做好了</div>
+    </div>
+    <p class="caption">像小时候等贺卡寄过来一样，等几分钟就好。<br>退出 App 也会继续做，做好了会告诉你。</p>
+  </section>
+</main>
+
+<div id="layer">
+  <div class="mask" id="mask"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 class="serif" id="sheetTitle"></h2>
+    <p class="hint">复制下面这句话，到专家模式里粘贴发送。<br>把名字和那件小事换成你们自己的，祝福才是你的。</p>
+    <div class="prompt" id="prompt"></div>
+    <p class="flow">① 打开超级小爱，切到专家模式 → ② 粘贴这句话 → ③ 等几分钟，做好了会告诉你</p>
+    <div class="btns">
+      <button class="btn btn-close" id="close" type="button">关闭</button>
+      <button class="btn btn-make" id="copy" type="button">复制这句话</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  var ACTION = 'com.xiaomi.voiceassistant.action.PREFILL_EXPERT_INPUT';
+  var SERVICE = 'com.miui.voiceassist/com.xiaomi.voiceassistant.SpeechQueryService';
+  var EXTRA = 'com.xiaomi.voiceassistant.extra.';
+  window.__xiaoaiPrefillErr = function (e) { console.warn('[xiaoaiPrefill] error', e); };
+  window.__xiaoaiPrefillOk = function (r) { console.log('[xiaoaiPrefill] ok', r); };
+  window.xiaoaiPrefill = function (text, source) {
+    if (!window.xiaoai || typeof window.xiaoai.engine !== 'function') return false;
+    var requestId = 'h5_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+    var uri = 'intent:#Intent;action=' + ACTION + ';component=' + SERVICE + ';' +
+      'S.' + EXTRA + 'INPUT_TEXT=' + encodeURIComponent(text) + ';' +
+      'S.' + EXTRA + 'SOURCE=' + encodeURIComponent(source || 'blessing_guide_h5') + ';' +
+      'S.' + EXTRA + 'REQUEST_ID=' + requestId + ';' +
+      'B.' + EXTRA + 'AUTO_SEND=false;' +
+      'i.' + EXTRA + 'PROTOCOL_VERSION=1;end';
+    window.xiaoai.engine('startService', uri, ['__xiaoaiPrefillErr', '__xiaoaiPrefillOk']);
+    return true;
+  };
+})();
+
+(function () {
+  var PROMPT = '帮我做一个像小时候手工贺卡一样的圣诞网页，送给我从小学就认识的好友阿杰。要有蜡笔字、彩纸剪的雪花和歪歪扭扭的圣诞树。点开后写：「还记得三年级你把唯一一块橡皮掰了一半给我吗？二十年了，圣诞快乐。」';
+  var CARDS = [
+    { tag: '网页', emoji: '🖍️', bg: '#f4d9c6', title: '给多年好友', desc: '像当年塞进你课桌的那张贺卡' },
+    { tag: '网页', emoji: '📒', bg: '#f3d3d6', title: '给认识十年的闺蜜', desc: '一页装下你们的十年' },
+    { tag: '图片', emoji: '🌙', bg: '#d6e0f0', title: '给异地的TA', desc: '画一张贺卡：隔着 1800 公里，也一起过圣诞' },
+    { tag: '视频 · 会员', emoji: '🎅', bg: '#f5e6c8', title: '给家里的孩子', desc: '圣诞老人给孩子的一段祝福视频' }
+  ];
+
+  var grid = document.getElementById('grid');
+  var layer = document.getElementById('layer');
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  document.getElementById('prompt').textContent = PROMPT;
+
+  CARDS.forEach(function (c) {
+    var card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML =
+      '<div class="art"><span class="tag"></span><span class="emoji"></span></div>' +
+      '<div class="body"><p class="title serif"></p><p class="desc"></p>' +
+      '<div class="btns"><button class="btn btn-view" type="button">查看</button>' +
+      '<button class="btn btn-make" type="button">做同款</button></div></div>';
+    card.querySelector('.art').style.background = c.bg;
+    card.querySelector('.tag').textContent = c.tag;
+    card.querySelector('.emoji').textContent = c.emoji;
+    card.querySelector('.title').textContent = c.title;
+    card.querySelector('.desc').textContent = c.desc;
+    card.querySelector('.btn-make').addEventListener('click', function () { makeSame(c.title); });
+    grid.appendChild(card);
+  });
+
+  function makeSame(title) {
+    document.getElementById('sheetTitle').textContent = '做同款：' + title;
+    document.body.classList.add('locked');
+    layer.classList.add('open');
+    try { window.xiaoaiPrefill(PROMPT); } catch (e) { console.warn('[guide] prefill threw', e); }
+  }
+
+  function closeSheet() {
+    layer.classList.remove('open');
+    document.body.classList.remove('locked');
+  }
+
+  function toast(text) {
+    toastEl.textContent = text;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2000);
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copyPrompt() {
+    var done = function () { toast('已复制，去专家模式里粘贴吧'); };
+    var fallback = function () {
+      if (legacyCopy(PROMPT)) done(); else toast('复制失败，请长按上面的文字手动复制');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(PROMPT).then(done, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  document.getElementById('close').addEventListener('click', closeSheet);
+  document.getElementById('mask').addEventListener('click', closeSheet);
+  document.getElementById('copy').addEventListener('click', copyPrompt);
+})();
+</script>
+</body>
+</html>
