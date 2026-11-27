@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>致阿杰 · 新年窗花</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kai:'Ma Shan Zheng','KaiTi','STKaiti','华文楷体','楷体',serif;
+  --red:#D62828; --red-deep:#C1121F; --gold:#F4CE6B; --gold-deep:#E0A93C;
+  --ink:#3A0508;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{height:100%;}
+body{
+  min-height:100svh;
+  font-family:var(--kai);
+  color:var(--gold);
+  background:radial-gradient(130% 110% at 50% -10%, #9A1620 0%, #6E0B12 48%, #43060A 100%);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid #FFE9A8;outline-offset:3px;}
+
+/* ===== 粒子层 ===== */
+#fxCanvas{position:fixed;inset:0;z-index:50;pointer-events:none;}
+
+/* ===== 四角小窗花 ===== */
+.deco-flower{position:fixed;width:clamp(44px,7vw,74px);opacity:.92;pointer-events:none;z-index:31;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.deco-flower.tl{top:10px;left:10px;}
+.deco-flower.tr{top:10px;right:10px;}
+.deco-flower.bl{bottom:10px;left:10px;}
+.deco-flower.br{bottom:10px;right:10px;}
+.deco-flower svg{width:100%;height:auto;display:block;}
+
+/* ===== 挂鞭 ===== */
+.cracker-row{position:fixed;top:-3px;z-index:34;height:clamp(170px,34vh,300px);pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));}
+.cracker-row.left{left:clamp(0px,1.5vw,14px);}
+.cracker-row.right{right:clamp(0px,1.5vw,14px);}
+@keyframes crackerPop{
+  0%{filter:brightness(3) drop-shadow(0 0 7px #FFE9A8);}
+  100%{filter:brightness(1) drop-shadow(0 0 0 transparent);}
+}
+.cracker.pop .body,.cracker.pop .head{animation:crackerPop .18s ease-out;}
+
+/* ===== 封面 ===== */
+.cover{
+  position:fixed;inset:0;z-index:30;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  opacity:1;
+  transition:opacity .8s ease, transform .8s ease;
+}
+.cover.hide{opacity:0;transform:scale(1.05);pointer-events:none;}
+.cover::before{
+  content:"";position:absolute;inset:14px;
+  border:1.5px solid rgba(244,206,107,.4);
+  border-radius:16px;pointer-events:none;
+}
+.cover-inner{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3vh,26px);
+  padding:24px;
+  text-align:center;
+}
+.moon{
+  position:relative;width:min(60vw,430px);aspect-ratio:1/1;max-width:100%;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, #FCF3DC, #F1E0B6 68%, #E4CE9C);
+  box-shadow:0 0 0 3px rgba(244,206,107,.55), 0 0 0 8px rgba(0,0,0,.12), 0 26px 60px rgba(0,0,0,.42);
+  display:flex;align-items:center;justify-content:center;
+}
+.flower-wrap{position:relative;width:78%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;}
+.flower-wrap .flower-big{width:100%;height:100%;display:block;}
+.fu{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(52px,9vw,88px);color:#C1121F;line-height:1;
+  text-shadow:0 0 0 1px rgba(244,206,107,.55), 0 0 18px rgba(244,206,107,.35);
+  transform:rotate(-6deg);
+}
+.cover-to{
+  font-size:clamp(24px,4.4vw,38px);letter-spacing:.42em;text-indent:.42em;
+  color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.25), 0 0 20px rgba(244,206,107,.3);
+}
+.cover-hint{
+  font-size:clamp(13px,2.2vw,16px);color:rgba(244,206,107,.66);letter-spacing:.14em;
+  animation:hintGlow 2.4s ease-in-out infinite;
+}
+@keyframes hintGlow{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+/* ===== 按钮 ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(180deg,#F8D97E,#E0A93C);color:#7E0E16;
+  font-size:clamp(16px,2.6vw,19px);letter-spacing:.1em;
+  padding:12px 28px;border:none;border-radius:999px;cursor:pointer;
+  box-shadow:0 5px 14px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .2s ease, filter .2s ease;
+}
+.btn:hover{filter:brightness(1.07);transform:translateY(-2px);}
+.btn:active{transform:translateY(0);filter:brightness(.97);}
+.btn svg{width:17px;height:17px;}
+
+/* ===== 主页面 ===== */
+.letter{
+  position:relative;z-index:10;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(20px,4vh,38px);
+  padding:clamp(56px,9vh,100px) 20px clamp(40px,6vh,60px);
+  opacity:0;visibility:hidden;
+  transition:opacity .9s ease .1s, visibility 0s linear .95s;
+}
+.letter.show{opacity:1;visibility:visible;transition:opacity .9s ease .1s, visibility 0s linear 0s;}
+.letter-head{text-align:center;}
+.banner{
+  font-size:clamp(46px,10vw,92px);line-height:1.05;letter-spacing:.1em;text-indent:.1em;
+  color:var(--gold);text-shadow:0 3px 0 rgba(0,0,0,.3), 0 0 26px rgba(244,206,107,.4);
+}
+.banner .q{font-size:.42em;color:rgba(244,206,107,.75);vertical-align:middle;}
+.to{
+  margin-top:clamp(6px,1.4vh,14px);
+  font-size:clamp(15px,2.6vw,20px);letter-spacing:.34em;text-indent:.34em;
+  color:rgba(244,206,107,.8);
+}
+
+.letter-card{
+  position:relative;width:min(880px,94vw);max-width:100%;
+  display:flex;align-items:stretch;justify-content:center;
+  gap:clamp(8px,2.5vw,32px);
+  padding:clamp(20px,4vw,44px) clamp(10px,2.4vw,30px);
+  background:linear-gradient(160deg,#A41522,#7E0E16 60%,#6A0B12);
+  border:1.5px solid rgba(244,206,107,.5);
+  border-radius:18px;
+  box-shadow:0 0 0 6px rgba(0,0,0,.1), inset 0 0 44px rgba(0,0,0,.18);
+}
+.duilian{
+  writing-mode:vertical-rl;text-orientation:upright;
+  font-size:clamp(14px,2.2vw,20px);letter-spacing:.3em;
+  color:rgba(244,206,107,.78);text-shadow:0 0 10px rgba(244,206,107,.28);
+  padding:2px;white-space:nowrap;flex:none;
+}
+.letter-body{
+  flex:1;min-width:0;max-width:540px;
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.4vh,20px);
+  text-align:center;
+}
+.letter-text{
+  font-size:clamp(18px,3.1vw,26px);line-height:1.95;letter-spacing:.06em;
+  color:#FCE9B8;text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.letter-text.strong{
+  font-size:clamp(22px,4vw,33px);line-height:1.5;color:#FFE9A8;margin-top:6px;
+  text-shadow:0 2px 3px rgba(0,0,0,.4), 0 0 20px rgba(244,206,107,.45);
+}
+.sig{
+  font-size:clamp(15px,2.6vw,19px);color:rgba(244,206,107,.85);
+  letter-spacing:.18em;text-align:right;margin-top:6px;
+}
+
+.letter-foot{
+  font-size:clamp(12px,2vw,14.5px);letter-spacing:.12em;
+  color:rgba(244,206,107,.58);text-align:center;
+}
+
+@media (max-width:640px){
+  .cover::before{inset:9px;}
+  .duilian{letter-spacing:.22em;font-size:clamp(12px,3.6vw,16px);}
+  .letter-card{padding-left:8px;padding-right:8px;gap:4px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="fxCanvas" aria-hidden="true"></canvas>
+
+<!-- 四角小窗花 -->
+<div class="deco-flower tl" id="cTL" aria-hidden="true"></div>
+<div class="deco-flower tr" id="cTR" aria-hidden="true"></div>
+<div class="deco-flower bl" id="cBL" aria-hidden="true"></div>
+<div class="deco-flower br" id="cBR" aria-hidden="true"></div>
+
+<!-- 挂鞭 -->
+<div class="cracker-row left" id="crL" aria-hidden="true"></div>
+<div class="cracker-row right" id="crR" aria-hidden="true"></div>
+
+<!-- 封面 -->
+<div id="cover" class="cover" tabindex="0" role="button" aria-label="展开新年祝福">
+  <div class="cover-inner">
+    <div class="moon">
+      <div class="flower-wrap"><span class="fu">福</span></div>
+    </div>
+    <p class="cover-to">致 阿杰</p>
+    <button id="openBtn" class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="9" width="10" height="12" rx="3"/><rect x="7" y="9" width="10" height="4" rx="2"/><path d="M12 9V4"/><circle cx="12" cy="3" r="1.2" fill="currentColor" stroke="none"/></svg>
+      展开新年祝福
+    </button>
+    <p class="cover-hint">轻触任意处 · 为你放一挂噼里啪啦的鞭炮</p>
+  </div>
+</div>
+
+<!-- 主页面 -->
+<main id="letter" class="letter">
+  <header class="letter-head">
+    <h1 class="banner"><span class="q">「</span>新年快乐<span class="q">」</span></h1>
+    <p class="to">—— 致我的发小 · 阿杰</p>
+  </header>
+
+  <section class="letter-card" aria-label="给阿杰的新年祝福">
+    <div class="duilian" aria-hidden="true">儿时鞭炮声犹在耳</div>
+    <div class="letter-body">
+      <p class="letter-text">
+        还记得那年除夕，<br>
+        我们俩偷偷点了一挂鞭炮，<br>
+        把隔壁家的大黄狗<br>
+        吓得满院子跑吗？
+      </p>
+      <p class="letter-text strong">二十年了，<br>新年快乐。</p>
+      <p class="sig">—— 阿杰的兄弟 敬上</p>
+    </div>
+    <div class="duilian" aria-hidden="true">廿载兄弟情常存心</div>
+  </section>
+
+  <div class="letter-actions" style="text-align:center;">
+    <button id="replayBtn" class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="9" width="10" height="12" rx="3"/><rect x="7" y="9" width="10" height="4" rx="2"/><path d="M12 9V4"/><circle cx="12" cy="3" r="1.2" fill="currentColor" stroke="none"/></svg>
+      再放一挂鞭炮
+    </button>
+  </div>
+
+  <footer class="letter-foot">写于 2026年11月27日 · 谨以此页，送给二十年的兄弟阿杰</footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============ 窗花 SVG 生成 ============ */
+  function bigFlower(){
+    const uid='mf1';
+    let holes='';
+    for(let i=0;i<8;i++){
+      holes += '<g transform="rotate('+(i*45)+' 120 120)">'
+        + '<path d="M120 18 C133 42 136 68 120 97 C104 68 107 42 120 18 Z"/>'
+        + '<path d="M120 34 L120 84" stroke="#000" stroke-width="3" fill="none"/>'
+        + '</g>';
+    }
+    for(let i=0;i<8;i++){
+      holes += '<g transform="rotate('+(i*45+22.5)+' 120 120)">'
+        + '<path d="M120 34 C127 48 129 58 120 76 C111 58 113 48 120 34 Z"/>'
+        + '</g>';
+    }
+    for(let i=0;i<16;i++){
+      const a=i*22.5*Math.PI/180;
+      holes += '<circle cx="'+(120+106*Math.sin(a)).toFixed(1)+'" cy="'+(120-106*Math.cos(a)).toFixed(1)+'" r="4.5"/>';
+    }
+    holes += '<circle cx="120" cy="120" r="30"/>';
+    holes += '<circle cx="120" cy="120" r="112" fill="none" stroke="#000" stroke-width="7" stroke-dasharray="5 6"/>';
+    return '<svg class="flower-big" viewBox="0 0 240 240" aria-hidden="true">'
+      + '<defs><mask id="'+uid+'mask"><rect width="240" height="240" fill="#fff"/><g fill="#000">'+holes+'</g></mask></defs>'
+      + '<circle cx="120" cy="120" r="116" fill="#D62828" mask="url(#'+uid+'mask)"/>'
+      + '<circle cx="120" cy="120" r="116" fill="none" stroke="#F4CE6B" stroke-width="2" opacity=".5"/>'
+      + '</svg>';
+  }
+  function cornerFlower(uid,rot){
+    let holes='';
+    for(let i=0;i<6;i++){
+      holes += '<g transform="rotate('+(i*60)+' 60 60)"><path d="M60 12 C70 30 72 42 60 58 C48 42 50 30 60 12 Z"/></g>';
+    }
+    holes += '<circle cx="60" cy="60" r="16"/>';
+    return '<svg viewBox="0 0 120 120" style="transform:rotate('+rot+'deg)" aria-hidden="true">'
+      + '<defs><mask id="'+uid+'mask"><rect width="120" height="120" fill="#fff"/><g fill="#000">'+holes+'</g></mask></defs>'
+      + '<circle cx="60" cy="60" r="58" fill="#D62828" mask="url(#'+uid+'mask)"/>'
+      + '</svg>';
+  }
+
+  /* ============ 挂鞭 SVG 生成 ============ */
+  function crackerRow(){
+    let s='<path d="M55 4 L55 12" stroke="#C9A24B" stroke-width="3"/>'
+      + '<circle cx="55" cy="4" r="4" fill="#F4CE6B"/>'
+      + '<path d="M55 12 L55 430" stroke="#C9A24B" stroke-width="2.5" opacity=".85"/>';
+    for(let i=0;i<14;i++){
+      const y=24+i*27, side=i%2, x=side?72:38, tilt=side?6:-6;
+      s += '<g class="cracker" transform="translate('+x+' '+y+') rotate('+tilt+')">'
+        + '<path d="M0 0 L'+(side?17:-17)+' -7" stroke="#D9A13B" stroke-width="1.6"/>'
+        + '<rect class="body" x="-6" y="0" width="12" height="20" rx="3" fill="#D62828" stroke="#8E131B" stroke-width="1"/>'
+        + '<rect class="head" x="-6" y="-1" width="12" height="6" rx="3" fill="#F4CE6B"/>'
+        + '</g>';
+    }
+    s += '<g class="cracker" transform="translate(55 408)">'
+      + '<path d="M0 0 L0 -10" stroke="#D9A13B" stroke-width="2"/>'
+      + '<rect class="body" x="-10" y="0" width="20" height="36" rx="5" fill="#B22222" stroke="#8E131B" stroke-width="1.5"/>'
+      + '<rect class="head" x="-10" y="-2" width="20" height="8" rx="4" fill="#F4CE6B"/>'
+      + '<path d="M-10 36 L-5 44 L5 44 L10 36" fill="#8E131B"/>'
+      + '</g>';
+    return '<svg viewBox="0 0 110 470" aria-hidden="true">'+s+'</svg>';
+  }
+
+  document.querySelector('.flower-wrap').insertAdjacentHTML('afterbegin', bigFlower());
+  document.getElementById('cTL').innerHTML = cornerFlower('c1',0);
+  document.getElementById('cTR').innerHTML = cornerFlower('c2',90);
+  document.getElementById('cBR').innerHTML = cornerFlower('c3',180);
+  document.getElementById('cBL').innerHTML = cornerFlower('c4',270);
+  document.getElementById('crL').innerHTML = crackerRow();
+  document.getElementById('crR').innerHTML = crackerRow();
+
+  /* ============ 鞭炮爆闪 ============ */
+  function lightUpCrackers(){
+    if(RM) return;
+    const cs = document.querySelectorAll('.cracker');
+    cs.forEach(function(c,i){
+      setTimeout(function(){
+        c.classList.add('pop');
+        setTimeout(function(){ c.classList.remove('pop'); }, 210);
+      }, i*11 + Math.random()*180);
+    });
+  }
+
+  /* ============ 音效（Web Audio 合成） ============ */
+  let AC = null;
+  function ac(){
+    if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  function thump(t, vol){
+    const c=ac(), o=c.createOscillator(), g=c.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(150,t);
+    o.frequency.exponentialRampToValueAtTime(45,t+0.15);
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+    o.connect(g).connect(c.destination);
+    o.start(t); o.stop(t+0.24);
+  }
+  function crack(t, vol){
+    const c=ac();
+    const dur=0.028+Math.random()*0.05;
+    const buf=c.createBuffer(1, Math.max(1, Math.floor(c.sampleRate*dur)), c.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++){ const e=1-i/d.length; d[i]=(Math.random()*2-1)*e*e; }
+    const src=c.createBufferSource(); src.buffer=buf;
+    const f=c.createBiquadFilter(); f.type='bandpass';
+    f.frequency.value=1400+Math.random()*2600; f.Q.value=0.9;
+    const g=c.createGain(); g.gain.value=vol;
+    src.connect(f); f.connect(g); g.connect(c.destination);
+    src.start(t);
+  }
+  function crackle(n, vol){
+    let t = ac().currentTime + 0.03;
+    thump(t, vol*1.15); t += 0.05;
+    for(let i=0;i<n;i++){
+      crack(t, vol*(0.5+Math.random()*0.5));
+      t += 0.015+Math.random()*0.075;
+    }
+  }
+
+  /* ============ 粒子（canvas） ============ */
+  const fx = document.getElementById('fxCanvas');
+  const cx = fx.getContext('2d');
+  let W=0, H=0, DPR=1;
+  function resizeFx(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    fx.width = Math.round(W*DPR); fx.height = Math.round(H*DPR);
+    fx.style.width = W+'px'; fx.style.height = H+'px';
+    cx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize', resizeFx);
+  resizeFx();
+
+  const P = [];
+  const COLORS = ['#F4CE6B','#FFE9A8','#E8A93C','#D62828','#FFD166'];
+  function spawnBurst(x,y,n,spread,speed){
+    if(RM) return;
+    for(let i=0;i<n;i++){
+      const a=Math.random()*Math.PI*2;
+      const v=speed*(0.4+Math.random()*0.8);
+      P.push({
+        x:x, y:y,
+        vx:Math.cos(a)*v, vy:Math.sin(a)*v - speed*0.22,
+        life:0.9+Math.random()*0.6, max:1,
+        size:2+Math.random()*3.6,
+        color:COLORS[i%COLORS.length],
+        rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.5,
+        g:0.17, type:'burst'
+      });
+    }
+  }
+  function spawnFalling(){
+    if(RM) return;
+    P.push({
+      x:Math.random()*W, y:-10,
+      vx:(Math.random()-0.5)*0.3, vy:0.5+Math.random()*0.8,
+      life:1, max:1,
+      size:1.6+Math.random()*2.6,
+      color: COLORS[Math.random()<0.6?0:1],
+      rot:Math.random()*6.28, vr:(Math.random()-0.5)*0.15,
+      g:0.012, type:'fall'
+    });
+  }
+  function sideBursts(rounds){
+    if(RM) return;
+    for(let r=0;r<rounds;r++){
+      setTimeout(function(){
+        const x = Math.random()<0.5
+          ? W*0.03+Math.random()*W*0.16
+          : W*(0.81+Math.random()*0.16);
+        const y = Math.random()*H*0.5;
+        spawnBurst(x, y, 14+Math.floor(Math.random()*9), 1.1, 3.1);
+      }, r*420+Math.random()*200);
+    }
+  }
+  function centerFlares(n){
+    if(RM) return;
+    for(let i=0;i<n;i++){
+      setTimeout(function(){
+        const x=W*(0.2+Math.random()*0.6), y=H*(0.12+Math.random()*0.24);
+        spawnBurst(x, y, 26+Math.floor(Math.random()*14), 1.4, 4.3);
+      }, i*320+160);
+    }
+  }
+  function stepParticles(){
+    for(let i=P.length-1;i>=0;i--){
+      const p=P[i];
+      p.vy += p.g; p.vx *= 0.985; p.vy *= 0.985;
+      p.x += p.vx; p.y += p.vy;
+      p.rot += p.vr; p.life -= 0.011;
+      if(p.life<=0 || p.y>H+30){ P.splice(i,1); continue; }
+      cx.globalAlpha = Math.max(p.life,0);
+      cx.fillStyle = p.color;
+      cx.save();
+      cx.translate(p.x,p.y);
+      cx.rotate(p.rot);
+      const s=p.size;
+      cx.fillRect(-s/2,-s/2,s,s*0.75);
+      cx.restore();
+    }
+    cx.globalAlpha = 1;
+  }
+  function loop(){
+    cx.clearRect(0,0,W,H);
+    if(P.length<46 && Math.random()<0.3) spawnFalling();
+    stepParticles();
+    requestAnimationFrame(loop);
+  }
+  if(!RM) requestAnimationFrame(loop);
+
+  /* ============ 开页流程 ============ */
+  const cover = document.getElementById('cover');
+  const mainEl = document.getElementById('letter');
+  const openBtn = document.getElementById('openBtn');
+  const replayBtn = document.getElementById('replayBtn');
+  let opened = false;
+
+  function openLetter(){
+    if(opened) return;
+    opened = true;
+    ac();
+    crackle(46, 0.42);
+    lightUpCrackers();
+    sideBursts(2);
+    centerFlares(2);
+    setTimeout(showLetter, 980);
+  }
+  function showLetter(){
+    cover.classList.add('hide');
+    mainEl.classList.add('show');
+    startAmbience();
+  }
+  let ambTimer = null;
+  function startAmbience(){
+    if(RM || ambTimer) return;
+    ambTimer = setInterval(function(){
+      sideBursts(1);
+    }, 9000);
+  }
+
+  cover.addEventListener('click', openLetter);
+  openBtn.addEventListener('click', function(e){ e.stopPropagation(); openLetter(); });
+  cover.addEventListener('keydown', function(e){
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openLetter(); }
+  });
+  replayBtn.addEventListener('click', function(){
+    ac();
+    crackle(38, 0.38);
+    lightUpCrackers();
+    sideBursts(2);
+    centerFlares(1);
+  });
+})();
+</script>
+
+<script>(function(){
+var d=document,b=d.body;if(!b)return;
+var old=b.querySelectorAll('[data-aigc-mark],#__xas_aigc_watermark__');
+for(var k=0;k<old.length;k++)old[k].parentNode&&old[k].parentNode.removeChild(old[k]);
+var f=d.createElement("div");
+f.id="__xas_aigc_watermark__";
+f.setAttribute("data-aigc-mark","true");
+f.style.cssText="position:fixed;bottom:8px;right:12px;z-index:2147483647;font-size:11px;padding:3px 7px;font-family:system-ui,sans-serif;pointer-events:none;color:rgba(30,30,30,0.6);background:rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.08);border-radius:4px;line-height:1.4;backdrop-filter:blur(8px);";
+var paths=["M14.0072 26.6377C14.2318 25.9475 13.3696 25.4389 12.8659 25.9611C9.56694 29.3941 6.9736 33.4696 5.35587 37.9788C-0.86998 55.1279 7.72006 74.1728 24.7867 80.6891C33.1499 83.8815 41.0252 82.7894 44.7212 81.8812C54.0056 79.6016 63.1537 72.4609 66.7114 63.4447C67.1039 62.4525 66.6252 61.3286 65.6404 60.9222C63.78 60.1548 61.9263 59.3896 60.3721 58.7471C59.46 58.3702 58.4117 58.7402 57.9398 59.6076C56.4287 62.3753 54.8496 65.0568 52.4945 67.2274C46.0349 73.5893 36.1675 75.8621 27.5956 72.9036C14.6833 68.6487 7.76998 54.5307 12.124 41.7683C12.3668 41.0553 12.4916 40.3038 12.4621 39.55C12.242 33.8125 12.8228 30.2955 14.0072 26.6377Z","M73.6785 14.313C74.3682 14.5378 74.8765 13.675 74.3546 13.171C70.9241 9.86968 66.8514 7.27451 62.3454 5.65564C45.2084 -0.574603 26.1769 8.0215 19.6651 25.1002C16.4751 33.4692 17.5664 41.3501 18.474 45.0488C20.7519 54.3396 27.8876 63.4943 36.8974 67.0544C37.8889 67.4472 39.012 66.9681 39.4182 65.9827C40.185 64.1209 40.9497 62.2659 41.5918 60.7107C41.9684 59.7979 41.5986 58.7489 40.7318 58.2767C37.9661 56.7645 35.2865 55.1843 33.1174 52.8275C26.76 46.3634 24.4888 36.489 27.4452 27.9111C31.6971 14.9897 45.8051 8.07145 58.5586 12.4285C59.271 12.6715 60.022 12.7964 60.7753 12.7668C66.5088 12.5466 70.0233 13.1278 73.6785 14.313Z","M85.9922 73.9549C85.7676 74.6451 86.6298 75.1537 87.1335 74.6315C90.4324 71.1985 93.0258 67.123 94.6435 62.6138C100.869 45.4647 92.2793 26.4198 75.2127 19.9035C66.8495 16.7111 58.9742 17.8033 55.2782 18.7114C45.9938 20.991 36.8456 28.1317 33.288 37.1479C32.8955 38.1401 33.3742 39.264 34.3589 39.6704C36.2194 40.4378 38.0731 41.203 39.6273 41.8455C40.5394 42.2224 41.5876 41.8524 42.0596 40.985C43.5706 38.2173 45.1498 35.5358 47.5049 33.3652C53.9645 27.0033 63.8319 24.7305 72.4038 27.689C85.3161 31.9439 92.2294 46.0619 87.8754 58.8243C87.6326 59.5373 87.5078 60.2888 87.5373 61.0426C87.7574 66.7801 87.1766 70.2971 85.9922 73.9549Z","M26.2674 86.2849C25.5777 86.0601 25.0694 86.9229 25.5913 87.4269C29.0219 90.7282 33.0945 93.3234 37.6028 94.9423C54.7398 101.173 73.7713 92.5764 80.2831 75.4977C83.4731 67.1287 82.3818 59.2478 81.4742 55.5491C79.1963 46.2583 72.0606 37.1036 63.0508 33.5435C62.0593 33.1507 60.9362 33.6298 60.53 34.6152C59.7632 36.477 58.9985 38.3297 58.3564 39.885C57.9798 40.7977 58.3496 41.8467 59.2163 42.3212C61.9821 43.8334 64.6617 45.4114 66.8285 47.7704C73.1859 54.2345 75.4571 64.1089 72.5007 72.6869C68.2488 85.6082 54.1408 92.5265 41.3874 88.1694C40.6749 87.9264 39.9239 87.8015 39.1706 87.8311C33.4371 88.0513 29.9226 87.4701 26.2674 86.2826V86.2849Z"];
+b.appendChild(f);
+var svg='<svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline;vertical-align:-2px;margin:0 4px">';
+for(var i=0;i<paths.length;i++)svg+='<path d="'+paths[i]+'" fill="rgba(30,30,30,0.5)"/>';
+svg+="</svg>";
+f.innerHTML="本页面由"+svg+"超级小爱AI生成";
+})();</script>
+</body>
+</html>
