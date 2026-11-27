@@ -189,7 +189,7 @@
   <div class="mask" id="mask"></div>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <h2 class="serif" id="sheetTitle"></h2>
-    <p class="hint">复制下面这句话，到专家模式里粘贴发送。<br>把名字和那件小事换成你们自己的，祝福才是你的。</p>
+    <p class="hint" id="hint"></p>
     <div class="prompt" id="prompt"></div>
     <p class="flow">① 打开超级小爱，切到专家模式 → ② 粘贴这句话 → ③ 等几分钟，做好了会告诉你</p>
     <div class="btns">
@@ -224,18 +224,22 @@
 
 (function () {
   var PROMPT = '帮我做一个像小时候过年贴的窗花一样的新年网页，送给我从小一起长大的发小阿杰。要有毛笔字、红纸剪的窗花和噼里啪啦的鞭炮。点开后写：「还记得那年除夕，我们俩偷偷点了一挂鞭炮，把隔壁家的大黄狗吓得满院子跑吗？二十年了，新年快乐。」';
+  var HINT = '复制下面这句话，到专家模式里粘贴发送。<br>把名字和那件小事换成你们自己的，祝福才是你的。';
+  var MOM_PROMPT = '用妈妈的照片给她做一张 H5 新年贺卡网页，配上祝福语';
+  var MOM_HINT = '小爱会从相册里找妈妈的照片，做进贺卡里。<br>相册里没有的话，先给小爱发一张妈妈的照片，再发送这句话。';
   var CARDS = [
     { tag: '网页', emoji: '🧨', bg: '#f6d6c8', title: '给多年好友', desc: '像小时候一起放鞭炮的那个除夕' },
     { tag: '网页', emoji: '🏮', bg: '#f3d3d6', title: '给认识十年的闺蜜', desc: '一页装下你们一起过的十个新年' },
     { tag: '图片', emoji: '🎆', bg: '#d6e0f0', title: '给异地的TA', desc: '画一张贺卡：隔着 1800 公里，也一起守岁' },
-    { tag: '视频 · 会员', emoji: '🧧', bg: '#f5e6c8', title: '给家里的孩子', desc: '财神爷给孩子拜年、发压岁钱的一段视频' }
+    { tag: '网页 · 照片', emoji: '💐', bg: '#f5e6c8', title: '给妈妈', desc: '用妈妈的照片，做一张新年贺卡网页',
+      prompt: MOM_PROMPT, hint: MOM_HINT }
   ];
+  var current = { prompt: PROMPT };
 
   var grid = document.getElementById('grid');
   var layer = document.getElementById('layer');
   var toastEl = document.getElementById('toast');
   var toastTimer = null;
-  document.getElementById('prompt').textContent = PROMPT;
 
   CARDS.forEach(function (c) {
     var card = document.createElement('article');
@@ -250,15 +254,18 @@
     card.querySelector('.emoji').textContent = c.emoji;
     card.querySelector('.title').textContent = c.title;
     card.querySelector('.desc').textContent = c.desc;
-    card.querySelector('.btn-make').addEventListener('click', function () { makeSame(c.title); });
+    card.querySelector('.btn-make').addEventListener('click', function () { makeSame(c); });
     grid.appendChild(card);
   });
 
-  function makeSame(title) {
-    document.getElementById('sheetTitle').textContent = '做同款：' + title;
+  function makeSame(c) {
+    current = { prompt: c.prompt || PROMPT };
+    document.getElementById('sheetTitle').textContent = '做同款：' + c.title;
+    document.getElementById('hint').innerHTML = c.hint || HINT;
+    document.getElementById('prompt').textContent = current.prompt;
     document.body.classList.add('locked');
     layer.classList.add('open');
-    try { window.xiaoaiPrefill(PROMPT); } catch (e) { console.warn('[guide] prefill threw', e); }
+    try { window.xiaoaiPrefill(current.prompt); } catch (e) { console.warn('[guide] prefill threw', e); }
   }
 
   function closeSheet() {
@@ -291,10 +298,10 @@
   function copyPrompt() {
     var done = function () { toast('已复制，去专家模式里粘贴吧'); };
     var fallback = function () {
-      if (legacyCopy(PROMPT)) done(); else toast('复制失败，请长按上面的文字手动复制');
+      if (legacyCopy(current.prompt)) done(); else toast('复制失败，请长按上面的文字手动复制');
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(PROMPT).then(done, fallback);
+      navigator.clipboard.writeText(current.prompt).then(done, fallback);
     } else {
       fallback();
     }
