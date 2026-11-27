@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta name="description" content="新岁伊始，愿您平安喜乐，万事胜意。">
+<meta property="og:title" content="给妈妈的新年贺卡">
+<meta property="og:description" content="新岁伊始，愿您平安喜乐，万事胜意。">
+<meta itemprop="name" content="给妈妈的新年贺卡">
+<meta itemprop="description" content="新岁伊始，愿您平安喜乐，万事胜意。">
+<meta property="og:image" content="https://test.wengzhe.cn/blessing-test/h5/7312d166308b48ba.jpg">
+<meta itemprop="image" content="https://test.wengzhe.cn/blessing-test/h5/7312d166308b48ba.jpg">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>给妈妈的新年贺卡</title>
+<style>
+  :root{
+    --bg:#FDF6EC; --tint:#FBEDDD; --surface:#FFFDF8;
+    --red:#B3272D; --red-h:#C93A34; --deep:#7E1B1B; --deepest:#4A0E10;
+    --gold:#C8932F; --gold-h:#DCA64C; --gold-l:#EBCB87; --on:#FFF9F0;
+    --t1:#4A1E1E; --t2:#8A5A52; --t3:#B08A7E;
+    --radius:18px; --btnr:9999px; --bstr:12%;
+    --border:color-mix(in srgb,var(--t1) var(--bstr),transparent);
+    --disp:'Kaiti SC','STKaiti','KaiTi','Songti SC','STSong',serif;
+    --body:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--t2); font-family:var(--body);
+    line-height:1.75; overflow-x:hidden;
+  }
+  .corner-shape-sq,.card,.tile,.btn,.pill,input{border-radius:var(--radius)}
+  button{font-family:inherit}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+
+  /* ===== 全局光斑背景 ===== */
+  .glow-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60% 45% at 15% 12%, rgba(227,179,92,.10), transparent 70%),
+      radial-gradient(55% 40% at 88% 20%, rgba(179,39,45,.08), transparent 70%),
+      radial-gradient(70% 55% at 50% 100%, rgba(227,179,92,.07), transparent 70%);
+  }
+
+  .wrap{
+    position:relative; z-index:1;
+    width:min(100% - 40px, 620px); margin-inline:auto;
+  }
+  .sect{position:relative}
+  .sect > .inner{position:relative; z-index:1}
+  .deco{position:absolute; z-index:0; pointer-events:none}
+
+  /* ===== Hero 封面 ===== */
+  .hero{
+    min-height:100vh; min-height:100svh;
+    display:flex; align-items:center; justify-content:center;
+    padding:56px 0;
+    background:linear-gradient(160deg,#5C1013,#8F1D20 55%,#A62B2B);
+  }
+  .hero .plum-l{left:6px; bottom:2%; width:min(34vw,170px); opacity:.9}
+  .hero .plum-r{right:6px; top:4%; width:min(26vw,130px); transform:scaleX(-1); opacity:.8}
+  .hero .plum-tl{left:8%; top:5%; width:min(18vw,92px); opacity:.65}
+
+  .flip-scene{width:100%; perspective:1700px; position:relative; z-index:2}
+  .flip-card{
+    position:relative; width:100%; height:clamp(430px, 72svh, 600px);
+    transform-style:preserve-3d;
+    transition:transform 1.05s cubic-bezier(.42,.08,.22,1);
+  }
+  .flip-card.open{transform:rotateY(180deg)}
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    border-radius:22px; display:flex; align-items:center; justify-content:center;
+    padding:34px 26px;
+  }
+  .face.front{
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.10), transparent 55%),
+      linear-gradient(150deg,#7E1B1B,#A62B2B);
+    border:1.5px solid rgba(235,203,135,.5);
+  }
+  .face.back{
+    transform:rotateY(180deg);
+    background:
+      radial-gradient(130% 100% at 50% 0%, #FFFDF4, #FBEEDC);
+    border:1.5px solid rgba(200,147,47,.4);
+  }
+  .front-inner,.back-inner{text-align:center; max-width:420px; width:100%}
+
+  .eyebrow{
+    font-family:var(--disp); font-size:.95rem; letter-spacing:.24em;
+    color:var(--gold-l); opacity:.95;
+  }
+  .year{
+    font-family:Georgia,'Songti SC',serif; font-weight:600;
+    font-size:clamp(3.2rem,16vw,5.2rem); line-height:1.05;
+    color:var(--gold-l); text-shadow:0 2px 14px rgba(0,0,0,.25);
+    margin-top:10px; letter-spacing:.04em;
+  }
+  .greet{
+    font-family:var(--disp); font-weight:700;
+    font-size:clamp(1.9rem,10vw,3rem); letter-spacing:.14em;
+    color:var(--on); margin-top:6px;
+  }
+  .sheep{width:clamp(88px,22vw,118px); margin:14px auto 4px}
+  .to-mom{
+    font-family:var(--disp); font-size:clamp(1.15rem,5.4vw,1.5rem);
+    letter-spacing:.1em; color:var(--on); margin-top:6px;
+  }
+  .b-open{
+    margin-top:22px; padding:13px 40px;
+    background:linear-gradient(135deg,#F2D89A,var(--gold));
+    color:#6E1618; font-size:1.02rem; font-weight:700; letter-spacing:.3em; text-indent:.3em;
+    border:none; border-radius:999px; cursor:pointer;
+    transition:transform .25s cubic-bezier(.28,.11,.32,1), filter .25s;
+  }
+  .b-open:hover,.b-open:focus,.b-open:active{color:#6E1618; filter:brightness(1.08); transform:translateY(-2px)}
+  .b-open:disabled{opacity:.5; cursor:default; transform:none}
+
+  .back-kicker{
+    font-family:var(--disp); font-size:1.5rem; font-weight:700; letter-spacing:.12em;
+    color:var(--deep);
+  }
+  .heart{width:44px; color:#D84A50; margin:18px auto 14px}
+  .back-line{
+    font-family:var(--disp); font-size:1.35rem; font-weight:700;
+    color:var(--red); letter-spacing:.06em;
+  }
+  .back-sub{color:var(--t2); font-size:.98rem; margin-top:12px}
+
+  /* ===== 信纸 ===== */
+  .letter{background:var(--bg); padding:clamp(52px,8vw,84px) 0}
+  .letter-card{
+    background:var(--surface); border-radius:var(--radius);
+    border:1px solid rgba(200,147,47,.35);
+    padding:clamp(26px,5.5vw,42px);
+    background-image:repeating-linear-gradient(transparent 0 31px, rgba(74,30,30,.045) 31px 32px);
+  }
+  .letter-head{display:flex; align-items:center; gap:14px; margin-bottom:26px}
+  .letter-head .line{flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold) 50%,transparent)}
+  .letter-head .blossom{width:30px; color:#C94F4F}
+  .l-greet{
+    font-family:var(--disp); font-size:1.35rem; font-weight:700; color:var(--deep);
+    letter-spacing:.06em; margin-bottom:16px;
+  }
+  .letter-card p{color:var(--t1); font-size:.99rem; margin-bottom:15px; text-indent:2em}
+  .letter-card p:last-of-type{margin-bottom:0}
+  .l-sig{
+    text-align:right; text-indent:0 !important;
+    font-family:var(--disp); font-size:1.06rem; color:var(--deep);
+    margin-top:22px !important; letter-spacing:.08em;
+  }
+  .l-heart{width:16px; display:inline-block; vertical-align:-2px; color:#D84A50; margin-left:4px}
+
+  /* ===== 祝福卡 ===== */
+  .wishes{
+    background:linear-gradient(165deg,#8F1D20,#A62B2B);
+    padding:clamp(56px,9vw,88px) 0;
+  }
+  .w-title{
+    font-family:var(--disp); font-weight:700; text-align:center;
+    font-size:clamp(1.5rem,6.6vw,2rem); letter-spacing:.12em; color:var(--on);
+  }
+  .w-sub{text-align:center; color:rgba(255,249,240,.82); font-size:.92rem; margin:8px 0 36px; letter-spacing:.16em}
+  .wishes-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .wish-card{
+    background:var(--surface); border-radius:var(--radius);
+    padding:28px 20px 26px; text-align:center;
+    transition:transform .28s cubic-bezier(.28,.11,.32,1);
+  }
+  .wish-card:hover{transform:translateY(-4px)}
+  .wish-icon{width:52px; margin:0 auto 12px; color:#B3272D}
+  .wish-card h3{
+    font-family:var(--disp); font-weight:700; font-size:1.22rem;
+    color:var(--deep); letter-spacing:.1em; margin-bottom:8px;
+  }
+  .wish-card p{font-size:.86rem; color:var(--t2); line-height:1.65}
+
+  /* ===== 灯笼 + 烟花 ===== */
+  .fworks{
+    background:
+      radial-gradient(90% 70% at 50% 0%, #5C1013, transparent 70%),
+      linear-gradient(180deg,#3A0A0C,#5C1013);
+    border-top:1px solid rgba(235,203,135,.28);
+    padding:clamp(56px,9vw,88px) 0 clamp(40px,6vw,56px);
+    text-align:center;
+  }
+  .f-eyebrow{color:var(--gold-l); letter-spacing:.22em; font-size:.85rem}
+  .f-title{
+    font-family:var(--disp); font-weight:700; color:var(--on);
+    font-size:clamp(1.5rem,6.6vw,2rem); letter-spacing:.1em; margin-top:8px;
+  }
+  .f-sub{color:rgba(255,249,240,.8); font-size:.92rem; margin-top:8px; letter-spacing:.1em}
+  .fire-panel{
+    background:var(--surface); border-radius:22px;
+    margin:30px auto 0; max-width:520px; padding:26px 20px 22px;
+  }
+  .lanterns{display:flex; justify-content:center; gap:clamp(14px,5vw,30px)}
+  .lantern-btn{
+    background:none; border:none; padding:0; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    transition:transform .25s cubic-bezier(.28,.11,.32,1);
+  }
+  .lantern-btn:hover{transform:translateY(-3px)}
+  .lantern-btn .lantern{
+    width:clamp(62px,21vw,88px); display:block;
+    filter:grayscale(.55) opacity(.78);
+    transition:filter .45s ease;
+  }
+  .lantern-btn.lit .lantern{filter:drop-shadow(0 0 11px rgba(255,205,120,.95)) brightness(1.06)}
+  .lantern-btn .wick-lit{opacity:0; transition:opacity .4s}
+  .lantern-btn .wick-dim{opacity:.85; transition:opacity .4s}
+  .lantern-btn.lit .wick-lit{opacity:1}
+  .lantern-btn.lit .wick-dim{opacity:0}
+  .lantern-label{
+    font-size:.92rem; letter-spacing:.14em; color:var(--t2);
+    transition:color .3s, font-weight .3s;
+  }
+  .lantern-btn.lit .lantern-label{color:var(--red); font-weight:700}
+  .hint{color:rgba(255,249,240,.78); font-size:.86rem; letter-spacing:.08em; margin-top:26px}
+  .hint.done{color:var(--gold-l); font-weight:700}
+
+  .fire-stage{
+    position:relative; height:clamp(200px,34vw,260px);
+    border-radius:var(--radius); overflow:hidden; margin-top:18px;
+    background:radial-gradient(120% 120% at 50% 30%, #6E1618, #2E080A 80%);
+    border:1px solid rgba(235,203,135,.25);
+  }
+  #fireCvs{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:manipulation}
+
+  /* ===== 结尾 ===== */
+  .ending{
+    background:
+      radial-gradient(90% 80% at 50% 100%, #6E1618, transparent 75%),
+      linear-gradient(180deg,#3A0A0C,#4A0E10);
+    border-top:1px solid rgba(235,203,135,.28);
+    padding:clamp(64px,10vw,96px) 0 72px;
+    text-align:center;
+  }
+  .ending .plum-r{right:10px; bottom:6%; width:min(30vw,150px); opacity:.85}
+  .e-kicker{color:var(--gold-l); letter-spacing:.3em; font-size:.85rem}
+  .e-greet{
+    font-family:var(--disp); font-weight:700;
+    font-size:clamp(2.2rem,10.5vw,3.3rem); letter-spacing:.1em;
+    color:var(--gold-l); text-shadow:0 2px 16px rgba(0,0,0,.35);
+    margin-top:14px;
+  }
+  .e-line{
+    font-family:var(--disp); font-size:clamp(1.05rem,4.6vw,1.3rem);
+    letter-spacing:.14em; color:var(--on); margin-top:14px;
+  }
+  .fu{
+    width:60px; height:60px; margin:30px auto 8px;
+    border:1.5px solid rgba(235,203,135,.75);
+    transform:rotate(45deg);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .fu span{
+    transform:rotate(-45deg); font-family:var(--disp); font-weight:700;
+    font-size:32px; color:var(--gold-l);
+  }
+  .e-sig{
+    font-family:var(--disp); font-size:1.12rem; letter-spacing:.14em;
+    color:var(--on); margin-top:24px;
+  }
+  .e-date{color:rgba(255,249,240,.72); font-size:.86rem; letter-spacing:.16em; margin-top:8px}
+  .e-foot{
+    color:var(--gold-l); font-size:.92rem; letter-spacing:.1em;
+    margin-top:34px; opacity:.9;
+  }
+  .e-heart{width:16px; display:inline-block; vertical-align:-2px; margin-left:4px; color:#EF6A70}
+
+  /* ===== Toast ===== */
+  .toast{
+    position:fixed; left:50%; bottom:30px; z-index:60;
+    transform:translateX(-50%) translateY(24px);
+    opacity:0; pointer-events:none;
+    background:linear-gradient(135deg,#F2D89A,var(--gold));
+    color:#6E1618; font-weight:700; letter-spacing:.08em;
+    padding:12px 24px; border-radius:999px; font-size:.95rem;
+    transition:opacity .35s ease, transform .35s ease;
+    box-shadow:0 6px 18px rgba(0,0,0,.22);
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:600px){
+    .wishes-grid{grid-template-columns:1fr}
+    .wish-card{padding:22px 18px}
+    .face{padding:28px 20px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition-duration:.01s !important; animation:none !important}
+    .flip-card{transition-duration:.01s !important}
+  }
+</style>
+</head>
+<body>
+<div class="glow-bg" aria-hidden="true"></div>
+
+<main class="wrap">
+
+  <!-- 封面 -->
+  <section class="hero sect" id="hero">
+    <div class="deco plum plum-l" aria-hidden="true">
+      <svg viewBox="0 0 220 190" style="width:100%;height:auto">
+        <path d="M14 180 C66 158 118 118 166 48" fill="none" stroke="#3A2020" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+        <path d="M166 48 C180 32 202 22 216 16" fill="none" stroke="#3A2020" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <path d="M104 104 C118 92 136 84 148 78" fill="none" stroke="#3A2020" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <g transform="translate(148,62) scale(.95)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+        <g transform="translate(96,96) scale(.72)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+        <g transform="translate(58,146) scale(.85)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+      </svg>
+    </div>
+    <div class="deco plum plum-r" aria-hidden="true">
+      <svg viewBox="0 0 220 190" style="width:100%;height:auto">
+        <path d="M14 180 C66 158 118 118 166 48" fill="none" stroke="#3A2020" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+        <path d="M104 104 C118 92 136 84 148 78" fill="none" stroke="#3A2020" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <g transform="translate(148,62) scale(.8)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+        <g transform="translate(96,96) scale(.65)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+      </svg>
+    </div>
+    <div class="deco plum plum-tl" aria-hidden="true">
+      <svg viewBox="0 0 160 140" style="width:100%;height:auto">
+        <path d="M10 132 C50 118 86 84 118 22" fill="none" stroke="#3A2020" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+        <g transform="translate(96,44) scale(.6)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+      </svg>
+    </div>
+
+    <div class="flip-scene">
+      <div class="flip-card" id="flipCard">
+        <div class="face front">
+          <div class="front-inner">
+            <p class="eyebrow">2027 · 丁未年 · 喜气洋洋</p>
+            <h1 class="year">2027</h1>
+            <h2 class="greet">新春快乐</h2>
+            <div class="sheep" aria-hidden="true">
+              <svg viewBox="0 0 120 104" style="width:100%;height:auto">
+                <ellipse cx="58" cy="76" rx="34" ry="22" fill="#F6E7D4" stroke="#C8946A" stroke-width="1.6"/>
+                <g fill="#FDF8EF" stroke="#D8B48F" stroke-width="1.2">
+                  <circle cx="32" cy="66" r="10"/><circle cx="46" cy="58" r="11"/><circle cx="61" cy="55" r="11"/><circle cx="75" cy="58" r="11"/><circle cx="87" cy="66" r="9"/><circle cx="44" cy="74" r="10"/><circle cx="61" cy="74" r="11"/><circle cx="77" cy="74" r="10"/>
+                </g>
+                <ellipse cx="86" cy="50" rx="15" ry="13" fill="#F6E7D4" stroke="#C8946A" stroke-width="1.6"/>
+                <ellipse cx="74" cy="43" rx="7" ry="10" fill="#EFD3B8" stroke="#C8946A" stroke-width="1.2" transform="rotate(-24 74 43)"/>
+                <ellipse cx="96" cy="43" rx="7" ry="10" fill="#EFD3B8" stroke="#C8946A" stroke-width="1.2" transform="rotate(24 96 43)"/>
+                <circle cx="81" cy="49" r="2.2" fill="#5A3A2A"/><circle cx="91" cy="49" r="2.2" fill="#5A3A2A"/>
+                <ellipse cx="86" cy="54" rx="2.6" ry="2" fill="#D89B84"/>
+                <circle cx="77" cy="54" r="3.2" fill="#F5B7B1" opacity=".7"/><circle cx="95" cy="54" r="3.2" fill="#F5B7B1" opacity=".7"/>
+                <rect x="46" y="92" width="6" height="10" rx="3" fill="#D8B48F"/><rect x="62" y="92" width="6" height="10" rx="3" fill="#D8B48F"/><rect x="78" y="92" width="6" height="10" rx="3" fill="#D8B48F"/>
+              </svg>
+            </div>
+            <p class="to-mom">给最亲爱的妈妈</p>
+            <button class="b-open" id="openCard" type="button">打开贺卡</button>
+          </div>
+        </div>
+        <div class="face back">
+          <div class="back-inner">
+            <p class="back-kicker">致 亲爱的妈妈</p>
+            <div class="heart" aria-hidden="true">
+              <svg viewBox="0 0 24 24" style="width:100%;height:auto"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg>
+            </div>
+            <p class="back-line">妈妈，新年快乐！</p>
+            <p class="back-sub">新岁伊始，愿您平安喜乐，万事胜意。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 信纸 -->
+  <section class="letter sect" id="letter">
+    <div class="inner">
+      <div class="letter-card">
+        <div class="letter-head">
+          <div class="line"></div>
+          <div class="blossom" aria-hidden="true">
+            <svg viewBox="0 0 40 40" style="width:100%;height:auto">
+              <g fill="#E9A6A6"><circle cx="20" cy="7" r="6"/><circle cx="33" cy="16" r="6"/><circle cx="27" cy="30" r="6"/><circle cx="13" cy="30" r="6"/><circle cx="7" cy="16" r="6"/></g>
+              <circle cx="20" cy="20" r="4" fill="#C94F4F"/>
+            </svg>
+          </div>
+          <div class="line"></div>
+        </div>
+        <p class="l-greet">亲爱的妈妈：</p>
+        <p>这一年，您又为这个家操劳了太多——一蔬一饭、一针一线，都藏着您说不完的爱。谢谢您，一直把我捧在手心里。</p>
+        <p>新岁将至，我没有别的奢望，只盼您：少些操劳，多些欢喜；身体安康，笑口常开；日子安稳，事事顺心。</p>
+        <p>妈妈，请您放心，我会照顾好自己，也会常回家看看。您牵挂的孩子，已经长大了。</p>
+        <p class="l-sig">—— 爱您的孩子 · 敬上<span class="l-heart" aria-hidden="true"><svg viewBox="0 0 24 24" style="width:100%;height:auto"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 祝福卡 -->
+  <section class="wishes sect" id="wishes">
+    <div class="inner">
+      <h2 class="w-title">三个心愿，送给妈妈</h2>
+      <p class="w-sub">愿新岁的每一天，都温柔待您</p>
+      <div class="wishes-grid">
+        <article class="wish-card">
+          <div class="wish-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 140" style="width:100%;height:auto">
+              <rect x="44" y="6" width="12" height="10" rx="3" fill="#C8932F"/>
+              <circle cx="50" cy="20" r="4.5" fill="#C8932F"/>
+              <rect x="33" y="30" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <ellipse cx="50" cy="74" rx="31" ry="42" fill="#D84A50"/>
+              <ellipse cx="41" cy="62" rx="8" ry="22" fill="rgba(255,255,255,.2)"/>
+              <rect x="33" y="110" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <rect x="46" y="119" width="8" height="12" rx="3" fill="#C8932F"/>
+              <circle cx="50" cy="72" r="9" fill="#F7D9A8" opacity=".9"/>
+            </svg>
+          </div>
+          <h3>岁岁平安</h3>
+          <p>愿您无病无忧，日日安好。</p>
+        </article>
+        <article class="wish-card">
+          <div class="wish-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" style="width:100%;height:auto">
+              <g fill="#E9A6A6"><circle cx="24" cy="8" r="7"/><circle cx="37" cy="18" r="7"/><circle cx="31" cy="34" r="7"/><circle cx="17" cy="34" r="7"/><circle cx="11" cy="18" r="7"/></g>
+              <circle cx="24" cy="23" r="5" fill="#C94F4F"/>
+              <circle cx="24" cy="23" r="2" fill="#F7D9A8"/>
+            </svg>
+          </div>
+          <h3>身体安康</h3>
+          <p>愿您吃好睡好，精神矍铄。</p>
+        </article>
+        <article class="wish-card">
+          <div class="wish-icon" aria-hidden="true">
+            <svg viewBox="0 0 120 104" style="width:100%;height:auto">
+              <ellipse cx="56" cy="74" rx="30" ry="19" fill="#F6E7D4" stroke="#C8946A" stroke-width="1.6"/>
+              <g fill="#FDF8EF" stroke="#D8B48F" stroke-width="1.2">
+                <circle cx="33" cy="65" r="9"/><circle cx="45" cy="58" r="10"/><circle cx="58" cy="56" r="10"/><circle cx="71" cy="58" r="10"/><circle cx="82" cy="65" r="8"/><circle cx="45" cy="72" r="9"/><circle cx="58" cy="72" r="10"/><circle cx="72" cy="72" r="9"/>
+              </g>
+              <ellipse cx="82" cy="50" rx="14" ry="12" fill="#F6E7D4" stroke="#C8946A" stroke-width="1.6"/>
+              <ellipse cx="71" cy="43" rx="6" ry="9" fill="#EFD3B8" stroke="#C8946A" stroke-width="1.2" transform="rotate(-24 71 43)"/>
+              <ellipse cx="92" cy="43" rx="6" ry="9" fill="#EFD3B8" stroke="#C8946A" stroke-width="1.2" transform="rotate(24 92 43)"/>
+              <circle cx="78" cy="49" r="2" fill="#5A3A2A"/><circle cx="87" cy="49" r="2" fill="#5A3A2A"/>
+              <circle cx="74" cy="53" r="3" fill="#F5B7B1" opacity=".7"/><circle cx="91" cy="53" r="3" fill="#F5B7B1" opacity=".7"/>
+              <rect x="45" y="89" width="5" height="9" rx="2.5" fill="#D8B48F"/><rect x="59" y="89" width="5" height="9" rx="2.5" fill="#D8B48F"/><rect x="73" y="89" width="5" height="9" rx="2.5" fill="#D8B48F"/>
+            </svg>
+          </div>
+          <h3>喜气洋洋</h3>
+          <p>愿您笑容常在，天天欢喜。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 灯笼 + 烟花 -->
+  <section class="fworks sect" id="fireworks">
+    <div class="inner">
+      <p class="f-eyebrow">孩 子 的 心 意</p>
+      <h2 class="f-title">点亮三盏灯，许下三个愿</h2>
+      <p class="f-sub">一盏给健康 · 一盏给平安 · 一盏给快乐</p>
+      <div class="fire-panel">
+        <div class="lanterns">
+          <button class="lantern-btn" type="button" aria-pressed="false">
+            <svg class="lantern" viewBox="0 0 100 140" aria-hidden="true">
+              <rect x="44" y="6" width="12" height="10" rx="3" fill="#C8932F"/>
+              <circle cx="50" cy="20" r="4.5" fill="#C8932F"/>
+              <path d="M50 25 v5" stroke="#C8932F" stroke-width="3"/>
+              <rect x="33" y="32" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <ellipse cx="50" cy="76" rx="31" ry="42" fill="#D84A50"/>
+              <ellipse cx="41" cy="64" rx="8" ry="22" fill="rgba(255,255,255,.2)"/>
+              <rect x="33" y="112" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <rect x="46" y="121" width="8" height="13" rx="3" fill="#C8932F"/>
+              <line x1="43" y1="134" x2="43" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="50" y1="134" x2="50" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="57" y1="134" x2="57" y2="140" stroke="#EBCB87" stroke-width="2"/>
+              <circle class="wick-dim" cx="50" cy="74" r="10" fill="#F7D9A8" opacity=".9"/>
+              <circle class="wick-lit" cx="50" cy="74" r="13" fill="#FFF1CC"/>
+            </svg>
+            <span class="lantern-label">平安</span>
+          </button>
+          <button class="lantern-btn" type="button" aria-pressed="false">
+            <svg class="lantern" viewBox="0 0 100 140" aria-hidden="true">
+              <rect x="44" y="6" width="12" height="10" rx="3" fill="#C8932F"/>
+              <circle cx="50" cy="20" r="4.5" fill="#C8932F"/>
+              <path d="M50 25 v5" stroke="#C8932F" stroke-width="3"/>
+              <rect x="33" y="32" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <ellipse cx="50" cy="76" rx="31" ry="42" fill="#D84A50"/>
+              <ellipse cx="41" cy="64" rx="8" ry="22" fill="rgba(255,255,255,.2)"/>
+              <rect x="33" y="112" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <rect x="46" y="121" width="8" height="13" rx="3" fill="#C8932F"/>
+              <line x1="43" y1="134" x2="43" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="50" y1="134" x2="50" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="57" y1="134" x2="57" y2="140" stroke="#EBCB87" stroke-width="2"/>
+              <circle class="wick-dim" cx="50" cy="74" r="10" fill="#F7D9A8" opacity=".9"/>
+              <circle class="wick-lit" cx="50" cy="74" r="13" fill="#FFF1CC"/>
+            </svg>
+            <span class="lantern-label">健康</span>
+          </button>
+          <button class="lantern-btn" type="button" aria-pressed="false">
+            <svg class="lantern" viewBox="0 0 100 140" aria-hidden="true">
+              <rect x="44" y="6" width="12" height="10" rx="3" fill="#C8932F"/>
+              <circle cx="50" cy="20" r="4.5" fill="#C8932F"/>
+              <path d="M50 25 v5" stroke="#C8932F" stroke-width="3"/>
+              <rect x="33" y="32" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <ellipse cx="50" cy="76" rx="31" ry="42" fill="#D84A50"/>
+              <ellipse cx="41" cy="64" rx="8" ry="22" fill="rgba(255,255,255,.2)"/>
+              <rect x="33" y="112" width="34" height="9" rx="4.5" fill="#B8842A"/>
+              <rect x="46" y="121" width="8" height="13" rx="3" fill="#C8932F"/>
+              <line x1="43" y1="134" x2="43" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="50" y1="134" x2="50" y2="140" stroke="#EBCB87" stroke-width="2"/><line x1="57" y1="134" x2="57" y2="140" stroke="#EBCB87" stroke-width="2"/>
+              <circle class="wick-dim" cx="50" cy="74" r="10" fill="#F7D9A8" opacity=".9"/>
+              <circle class="wick-lit" cx="50" cy="74" r="13" fill="#FFF1CC"/>
+            </svg>
+            <span class="lantern-label">快乐</span>
+          </button>
+        </div>
+        <p class="hint" id="lanternHint" style="margin-top:18px">三盏灯点亮后，烟花会为您绽放</p>
+      </div>
+      <div class="fire-stage">
+        <canvas id="fireCvs" role="img" aria-label="烟花画布：轻点屏幕绽放烟花"></canvas>
+      </div>
+      <p class="hint" id="fireHint">轻点上面的画布，为妈妈放一束烟花</p>
+    </div>
+  </section>
+
+  <!-- 结尾 -->
+  <section class="ending sect" id="ending">
+    <div class="deco plum plum-r" aria-hidden="true">
+      <svg viewBox="0 0 220 190" style="width:100%;height:auto">
+        <path d="M14 180 C66 158 118 118 166 48" fill="none" stroke="#3A2020" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+        <path d="M104 104 C118 92 136 84 148 78" fill="none" stroke="#3A2020" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+        <g transform="translate(148,62) scale(.85)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+        <g transform="translate(96,96) scale(.68)" fill="#E9A6A6"><circle cx="0" cy="-14" r="7"/><circle cx="13" cy="-5" r="7"/><circle cx="8" cy="11" r="7"/><circle cx="-8" cy="11" r="7"/><circle cx="-13" cy="-5" r="7"/><circle cx="0" cy="0" r="5" fill="#C94F4F"/></g>
+      </svg>
+    </div>
+    <div class="inner">
+      <p class="e-kicker">新 春 寄 语</p>
+      <h2 class="e-greet">新年快乐，妈妈！</h2>
+      <p class="e-line">愿您 岁岁平安 · 年年喜乐</p>
+      <div class="fu" aria-hidden="true"><span>福</span></div>
+      <p class="e-sig">—— 爱您的孩子 · 敬上</p>
+      <p class="e-date">2026年11月27日</p>
+      <p class="e-foot">谢谢您，妈妈。您的孩子永远爱您<span class="e-heart" aria-hidden="true"><svg viewBox="0 0 24 24" style="width:100%;height:auto"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/></svg></span></p>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">三愿已许，福气满堂！</div>
+
+<script>
+(function(){
+  'use strict';
+  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- 打开贺卡 ---- */
+  var flipCard = document.getElementById('flipCard');
+  var openBtn  = document.getElementById('openCard');
+  openBtn.addEventListener('click', function(){
+    flipCard.classList.add('open');
+    openBtn.disabled = true;
+    setTimeout(function(){
+      document.getElementById('letter').scrollIntoView({behavior: RM ? 'auto' : 'smooth', block: 'start'});
+    }, 950);
+  });
+
+  /* ---- 灯笼 ---- */
+  var lanternBtns = document.querySelectorAll('.lantern-btn');
+  var lanternHint = document.getElementById('lanternHint');
+  function allLit(){ return document.querySelectorAll('.lantern-btn.lit').length === 3; }
+
+  /* ---- 烟花 ---- */
+  var stage = document.querySelector('.fire-stage');
+  var cvs   = document.getElementById('fireCvs');
+  var ctx   = cvs.getContext('2d');
+  var W = 0, H = 0, parts = [];
+  var PAL = ['#FFE08A','#FFD166','#FF8FA3','#FF5D5D','#FFF6E0','#F4C95D','#FFB26B','#F7F3E8'];
+
+  function fit(){
+    var r = stage.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cvs.width  = Math.max(1, Math.round(r.width * dpr));
+    cvs.height = Math.max(1, Math.round(r.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    W = r.width; H = r.height;
+  }
+  fit();
+
+  function burst(x, y, n, sp){
+    for (var i = 0; i < n; i++){
+      var a = Math.random() * Math.PI * 2;
+      var v = 0.6 + Math.random() * sp;
+      parts.push({
+        x: x, y: y,
+        vx: Math.cos(a) * v,
+        vy: Math.sin(a) * v - 1.1,
+        life: 1,
+        decay: 0.012 + Math.random() * 0.012,
+        sz: 1.6 + Math.random() * 2.4,
+        c: PAL[(Math.random() * PAL.length) | 0]
+      });
+    }
+  }
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < parts.length; i++){
+      var p = parts[i];
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.035; p.vx *= 0.985; p.vy *= 0.985;
+      p.life -= p.decay;
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.c;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.sz * p.life + 0.4, 0, 6.2832);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    parts = parts.filter(function(q){ return q.life > 0; });
+    requestAnimationFrame(step);
+  }
+  step(); /* 初始化启动动画循环 */
+
+  cvs.addEventListener('click', function(e){
+    var r = cvs.getBoundingClientRect();
+    burst(e.clientX - r.left, e.clientY - r.top, RM ? 12 : 36, RM ? 2.2 : 3.2);
+  });
+
+  /* ---- Toast ---- */
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2800);
+  }
+
+  function celebrate(){
+    showToast('三愿已许，福气满堂！');
+    setTimeout(function(){ burst(W * 0.5, H * 0.5, RM ? 14 : 42, RM ? 2.2 : 3.4); }, 350);
+    setTimeout(function(){ burst(W * 0.3, H * 0.35, RM ? 10 : 30, RM ? 2 : 2.9); }, 800);
+    setTimeout(function(){ burst(W * 0.7, H * 0.4, RM ? 10 : 30, RM ? 2 : 2.9); }, 1250);
+  }
+
+  lanternBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      b.classList.toggle('lit');
+      b.setAttribute('aria-pressed', b.classList.contains('lit') ? 'true' : 'false');
+      if (b.classList.contains('lit')){
+        burst(W * (0.2 + Math.random() * 0.6), H * (0.3 + Math.random() * 0.4), RM ? 8 : 20, RM ? 2 : 2.6);
+      }
+      if (allLit()){
+        lanternHint.textContent = '三盏灯都亮了，愿妈妈新岁圆满！';
+        lanternHint.classList.add('done');
+        celebrate();
+      } else {
+        lanternHint.textContent = '还差 ' + (3 - document.querySelectorAll('.lantern-btn.lit').length) + ' 盏灯，继续点亮吧';
+        lanternHint.classList.remove('done');
+      }
+    });
+  });
+
+  /* ---- 滚动到烟花区时放一场开场烟花 ---- */
+  var fw = document.getElementById('fireworks');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          fit();
+          burst(W * 0.5, H * 0.5, RM ? 12 : 38, RM ? 2.2 : 3.2);
+          io.disconnect();
+        }
+      });
+    }, {threshold: 0.35});
+    io.observe(fw);
+  }
+
+  /* ---- 尺寸自适应 ---- */
+  if (window.ResizeObserver){
+    var ro = new ResizeObserver(function(){ fit(); });
+    ro.observe(stage);
+  }
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', function(){ setTimeout(fit, 300); });
+})();
+</script>
+
+<script>(function(){
+var d=document,b=d.body;if(!b)return;
+var old=b.querySelectorAll('[data-aigc-mark],#__xas_aigc_watermark__');
+for(var k=0;k<old.length;k++)old[k].parentNode&&old[k].parentNode.removeChild(old[k]);
+var f=d.createElement("div");
+f.id="__xas_aigc_watermark__";
+f.setAttribute("data-aigc-mark","true");
+f.style.cssText="position:fixed;bottom:8px;right:12px;z-index:2147483647;font-size:11px;padding:3px 7px;font-family:system-ui,sans-serif;pointer-events:none;color:rgba(30,30,30,0.6);background:rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.08);border-radius:4px;line-height:1.4;backdrop-filter:blur(8px);";
+var paths=["M14.0072 26.6377C14.2318 25.9475 13.3696 25.4389 12.8659 25.9611C9.56694 29.3941 6.9736 33.4696 5.35587 37.9788C-0.86998 55.1279 7.72006 74.1728 24.7867 80.6891C33.1499 83.8815 41.0252 82.7894 44.7212 81.8812C54.0056 79.6016 63.1537 72.4609 66.7114 63.4447C67.1039 62.4525 66.6252 61.3286 65.6404 60.9222C63.78 60.1548 61.9263 59.3896 60.3721 58.7471C59.46 58.3702 58.4117 58.7402 57.9398 59.6076C56.4287 62.3753 54.8496 65.0568 52.4945 67.2274C46.0349 73.5893 36.1675 75.8621 27.5956 72.9036C14.6833 68.6487 7.76998 54.5307 12.124 41.7683C12.3668 41.0553 12.4916 40.3038 12.4621 39.55C12.242 33.8125 12.8228 30.2955 14.0072 26.6377Z","M73.6785 14.313C74.3682 14.5378 74.8765 13.675 74.3546 13.171C70.9241 9.86968 66.8514 7.27451 62.3454 5.65564C45.2084 -0.574603 26.1769 8.0215 19.6651 25.1002C16.4751 33.4692 17.5664 41.3501 18.474 45.0488C20.7519 54.3396 27.8876 63.4943 36.8974 67.0544C37.8889 67.4472 39.012 66.9681 39.4182 65.9827C40.185 64.1209 40.9497 62.2659 41.5918 60.7107C41.9684 59.7979 41.5986 58.7489 40.7318 58.2767C37.9661 56.7645 35.2865 55.1843 33.1174 52.8275C26.76 46.3634 24.4888 36.489 27.4452 27.9111C31.6971 14.9897 45.8051 8.07145 58.5586 12.4285C59.271 12.6715 60.022 12.7964 60.7753 12.7668C66.5088 12.5466 70.0233 13.1278 73.6785 14.313Z","M85.9922 73.9549C85.7676 74.6451 86.6298 75.1537 87.1335 74.6315C90.4324 71.1985 93.0258 67.123 94.6435 62.6138C100.869 45.4647 92.2793 26.4198 75.2127 19.9035C66.8495 16.7111 58.9742 17.8033 55.2782 18.7114C45.9938 20.991 36.8456 28.1317 33.288 37.1479C32.8955 38.1401 33.3742 39.264 34.3589 39.6704C36.2194 40.4378 38.0731 41.203 39.6273 41.8455C40.5394 42.2224 41.5876 41.8524 42.0596 40.985C43.5706 38.2173 45.1498 35.5358 47.5049 33.3652C53.9645 27.0033 63.8319 24.7305 72.4038 27.689C85.3161 31.9439 92.2294 46.0619 87.8754 58.8243C87.6326 59.5373 87.5078 60.2888 87.5373 61.0426C87.7574 66.7801 87.1766 70.2971 85.9922 73.9549Z","M26.2674 86.2849C25.5777 86.0601 25.0694 86.9229 25.5913 87.4269C29.0219 90.7282 33.0945 93.3234 37.6028 94.9423C54.7398 101.173 73.7713 92.5764 80.2831 75.4977C83.4731 67.1287 82.3818 59.2478 81.4742 55.5491C79.1963 46.2583 72.0606 37.1036 63.0508 33.5435C62.0593 33.1507 60.9362 33.6298 60.53 34.6152C59.7632 36.477 58.9985 38.3297 58.3564 39.885C57.9798 40.7977 58.3496 41.8467 59.2163 42.3212C61.9821 43.8334 64.6617 45.4114 66.8285 47.7704C73.1859 54.2345 75.4571 64.1089 72.5007 72.6869C68.2488 85.6082 54.1408 92.5265 41.3874 88.1694C40.6749 87.9264 39.9239 87.8015 39.1706 87.8311C33.4371 88.0513 29.9226 87.4701 26.2674 86.2826V86.2849Z"];
+b.appendChild(f);
+var svg='<svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline;vertical-align:-2px;margin:0 4px">';
+for(var i=0;i<paths.length;i++)svg+='<path d="'+paths[i]+'" fill="rgba(30,30,30,0.5)"/>';
+svg+="</svg>";
+f.innerHTML="本页面由"+svg+"超级小爱AI生成";
+})();</script>
+</body>
+</html>
